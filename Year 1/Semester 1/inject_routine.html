@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Inject Routine</title></head>
+<body>
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  const routine = `21-06-2026
+Sunday
+
+10.15-11.15
+Introduction to MSE
+A.A.Mamun Sir
+
+11.20-12.20
+Crystallography
+Jesmin Sultana Mam`;
+  try {
+    localStorage.setItem('mse_routines', '[]');
+  } catch (e) {}
+  window.open('MSE_1st_Semester_Dashboard.html', '_self');
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      if (typeof addRoutineFromText === 'function') {
+        addRoutineFromText(routine);
+        alert('Routine added for Sunday');
+      } else {
+        alert('Dashboard loaded, but please paste the routine in Edit.');
+      }
+    }, 1500);
+  });
+});
+</script>
+</body>
+</html>

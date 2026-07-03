@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MSE 1st Semester | RU 2025-26</title>
+<style>
+:root {
+  --bg: #0B0F1A;
+  --card: #111827;
+  --border: #1F2937;
+  --text: #F3F4F6;
+  --muted: #9CA3AF;
+  --accent: #22D3EE;
+  --success: #34D399;
+  --warning: #FBBF24;
+  --danger: #F87171;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 16px; }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.title h1 { font-size: 1.4rem; font-weight: 700; }
+
+.title p { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+.badge-row { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+
+.badge {
+  background: var(--card);
+  color: var(--accent);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid var(--border);
+}
+
+.badge.warn { color: var(--warning); border-color: rgba(251,191,36,0.3); }
+
+.stats { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.stat {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-align: center;
+  min-width: 72px;
+}
+
+.stat .value {
+  font-family: ui-monospace, monospace;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.stat .label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; }
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 16px;
+}
+
+@media (max-width: 960px) { .layout { grid-template-columns: 1fr; } }
+
+.card + .card { margin-top: 14px; }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--bg);
+  background: #111827;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.card-header h2 { font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+
+.card-body { padding: 14px; }
+
+.courses { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+
+.course {
+  background: linear-gradient(180deg, rgba(17,24,39,0.0), rgba(17,24,39,0.85));
+  border: 1px solid var(--course-border, var(--border));
+  border-radius: 14px;
+  padding: 14px;
+  transition: transform 0.18s, border-color 0.2s, box-shadow 0.2s;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+
+.course:hover {
+  transform: translateY(-2px) scale(1.01);
+  border-color: var(--course-accent, var(--accent));
+  box-shadow: 0 18px 40px rgba(0,0,0,0.45), 0 0 24px rgba(var(--course-accent-rgb, 34,211,238), 0.25);
+}
+
+.course-glow {
+  position: absolute;
+  left: -30px;
+  top: -30px;
+  width: 90px;
+  height: 90px;
+  background: radial-gradient(circle, var(--course-accent-rgb, 34,211,238), transparent 70%);
+  opacity: 0.12;
+  pointer-events: none;
+  filter: blur(10px);
+}
+
+.course-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.course-code { font-family: ui-monospace, monospace; font-size: 0.75rem; font-weight: 800; color: var(--course-accent, var(--accent)); background: rgba(34,211,238,0.1); padding: 3px 8px; border-radius: 6px; letter-spacing: 0.04em; }
+.course-credits { font-size: 0.7rem; color: var(--muted); background: var(--bg); padding: 3px 8px; border-radius: 999px; border: 1px solid var(--border); font-weight: 700; font-family: ui-monospace, monospace; }
+.course-title { font-size: 0.9rem; font-weight: 700; margin: 6px 0; color: var(--text); }
+.course-teacher { font-size: 0.78rem; color: var(--muted); margin-bottom: 10px; font-style: italic; }
+
+.course-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.course-meta .pill { background: var(--bg); padding: 4px 8px; border-radius: 999px; font-size: 0.7rem; color: var(--muted); border: 1px solid var(--border); font-weight: 500; }
+.course-type { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+.course-type.class { background: rgba(99,102,241,0.15); color: #c7d2fe; border: 1px solid rgba(129,140,248,0.35); }
+.course-type.lab { background: rgba(236,72,153,0.15); color: #fbcfe8; border: 1px solid rgba(244,114,182,0.35); }
+
+.course-score { margin-top: 12px; }
+.course-score-header { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--muted); margin-bottom: 5px; }
+.course-score-header strong { color: var(--text); }
+.course-score-bar { height: 8px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 999px; overflow: hidden; }
+.course-score-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--course-accent, var(--accent)), rgba(255,255,255,0.2)); background-size: 200% 100%; transition: width 0.4s; }
+
+.mark-breakdown { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+.mark-breakdown-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.72rem; color: var(--muted); background: var(--bg); padding: 6px 8px; border-radius: 8px; border: 1px solid var(--border); }
+.mark-breakdown-item .label { flex: 1; }
+.mark-breakdown-item .value { font-family: ui-monospace, monospace; font-weight: 800; color: var(--course-accent, var(--accent)); background: rgba(34,211,238,0.08); padding: 2px 8px; border-radius: 6px; font-size: 0.7rem; }
+
+/* Weekly Overview */
+.weekly-overview {
+  overflow-x: auto;
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(180px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.overview-day {
+  background: var(--card);
+  display: flex;
+  flex-direction: column;
+}
+
+.overview-day-header {
+  background: rgba(0,0,0,0.35);
+  padding: 8px;
+  text-align: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border);
+}
+
+.overview-tasks {
+  padding: 8px;
+  min-height: 100px;
+}
+
+.overview-task {
+  background: rgba(34,211,238,0.1);
+  border: 1px solid rgba(34,211,238,0.15);
+  color: var(--text);
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  margin-bottom: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  position: relative;
+}
+
+.overview-task:hover .overview-delete {
+  display: inline-block;
+}
+
+.overview-task-primary {
+  width: 100%;
+}
+
+.overview-task-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 6px;
+  width: 100%;
+}
+
+.overview-task-title {
+  font-weight: 600;
+  font-size: 0.78rem;
+  line-height: 1.3;
+  word-break: break-word;
+}
+
+.overview-task-time {
+  font-family: ui-monospace, monospace;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+.overview-task-teacher {
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-top: 0px;
+  word-break: break-word;
+}
+
+.overview-delete {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #f87171;
+  cursor: pointer;
+  font-size: 0.7rem;
+  padding: 0;
+  margin-left: 4px;
+}
+
+.overview-empty {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-style: italic;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.overview-day .btn.primary {
+  margin: 6px;
+  padding: 4px 8px;
+  font-size: 0.7rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.overview-day:hover .btn.primary {
+  opacity: 1;
+}
+
+/* Class Tracker */
+.tracker-list { display: flex; flex-direction: column; gap: 10px; }
+.tracker-row {
+  background: #111827;
+  border: 1px solid var(--bg);
+  border-radius: 10px;
+  padding: 12px;
+}
+.tracker-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.tracker-title { font-weight: 600; font-size: 0.9rem; }
+.tracker-meta { font-size: 0.75rem; color: var(--muted); }
+.tracker-bar {
+  height: 8px;
+  background: var(--bg);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin: 8px 0 6px;
+}
+.tracker-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--success));
+  border-radius: 999px;
+}
+.tracker-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.tracker-count {
+  font-family: ui-monospace, monospace;
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 0.85rem;
+  min-width: 80px;
+  text-align: center;
+  background: var(--bg);
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.tracker-note { margin-top: 10px; }
+.tracker-note label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.note-editor {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  resize: vertical;
+  min-height: 72px;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Weekly Calendar */
+.weekly-wrapper { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+
+.weekly-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  background: #111827;
+  border-bottom: 1px solid var(--bg);
+}
+
+.weekly-header h3 { font-size: 0.9rem; font-weight: 600; }
+.weekly-toolbar { display: flex; gap: 8px; align-items: center; }
+
+.weekly-calendar {
+  display: grid;
+  grid-template-columns: 52px repeat(7, 1fr);
+  gap: 1px;
+  background: var(--bg);
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.weekly-calendar.compact .day-column:not(.has-events),
+.weekly-calendar.compact .time-row:not(.time-header) { display: none; }
+
+.day-column { background: var(--card); }
+.day-column.has-events { background: #0F172A; }
+
+.day-header {
+  background: rgba(0,0,0,0.35);
+  padding: 6px;
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.day-column.has-events .day-header { color: var(--accent); }
+
+.time-cell {
+  padding: 4px;
+  font-size: 0.65rem;
+  color: var(--muted);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  background: rgba(0,0,0,0.2);
+}
+
+.time-header {
+  font-weight: 700;
+  background: rgba(0,0,0,0.4) !important;
+}
+
+.event-dot {
+  background: rgba(34,211,238,0.15);
+  color: var(--accent);
+  border: 1px solid rgba(34,211,238,0.25);
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin: 2px 0;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.event-dot:hover { background: rgba(34,211,238,0.25); }
+
+.cell-add {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+  opacity: 0.85;
+  transition: transform 0.15s, opacity 0.15s;
+}
+
+.cell-add:hover { transform: scale(1.1); opacity: 1; }
+.day-column:hover .cell-add { opacity: 1; }
+
+.schedule-toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+.day-select {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-width: 140px;
+}
+
+.schedule-list { display: flex; flex-direction: column; gap: 10px; }
+
+.schedule-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #111827;
+  border: 1px solid var(--bg);
+  border-radius: 10px;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.schedule-item:hover { border-color: var(--border); }
+
+.schedule-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent);
+  border-radius: 10px 0 0 10px;
+}
+
+.time-badge {
+  background: var(--bg);
+  color: var(--accent);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-family: ui-monospace, monospace;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.schedule-info { flex: 1; }
+.schedule-course { font-weight: 600; font-size: 0.9rem; margin-bottom: 2px; }
+.schedule-teacher { font-size: 0.8rem; color: var(--muted); }
+
+.schedule-type { font-size: 0.7rem; padding: 4px 10px; border-radius: 6px; font-weight: 700; }
+.type-class { background: rgba(34,211,238,0.15); color: var(--accent); }
+.type-lab { background: rgba(52,211,153,0.15); color: var(--success); }
+.type-study { background: rgba(251,191,36,0.15); color: var(--warning); }
+.type-other { background: rgba(248,113,113,0.15); color: var(--danger); }
+
+.empty-state { text-align: center; padding: 24px; color: var(--muted); }
+.empty-icon { font-size: 2rem; margin-bottom: 8px; opacity: 0.6; }
+.empty-text { font-size: 0.85rem; }
+
+.sidebar { display: flex; flex-direction: column; gap: 14px; }
+
+.quick-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+
+.quick-stat {
+  background: #111827;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid var(--bg);
+}
+
+.quick-stat .value { font-family: ui-monospace, monospace; font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+.quick-stat .label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; margin-top: 2px; }
+
+.resources { display: grid; grid-template-columns: 1fr; gap: 8px; }
+
+.resource {
+  background: #111827;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--bg);
+  transition: all 0.2s;
+}
+
+.resource:hover { border-color: var(--border); transform: translateX(4px); }
+.resource-icon { font-size: 1.4rem; color: var(--accent); }
+.resource-title { font-size: 0.85rem; font-weight: 600; flex: 1; }
+.resource-path { font-size: 0.7rem; color: var(--muted); font-family: ui-monospace, monospace; }
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.82);
+  z-index: 1000;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.modal.active { display: flex; }
+.modal-content {
+  background: var(--card);
+  border-radius: 14px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--bg);
+  background: #111827;
+}
+.modal-header h3 { font-size: 0.95rem; }
+.modal-close { background: none; border: none; color: var(--muted); font-size: 1.5rem; cursor: pointer; }
+.modal-body { padding: 14px; }
+.form-group { margin-bottom: 14px; }
+.form-group label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 4px; }
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+.form-group textarea { resize: vertical; min-height: 140px; font-family: ui-monospace, monospace; }
+.form-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  transition: all 0.2s;
+}
+.btn.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 700; }
+.btn.danger { background: var(--danger); color: white; border-color: var(--danger); }
+.btn:hover { background: var(--border); }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+ ::selection { background: rgba(34,211,238,0.25); }
+
+/* Chat */
+.chat-block { padding: 0; }
+.chat-log {
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.chat-log .empty-state { margin-top: 20px; }
+.chat-msg {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 85%;
+}
+.chat-msg.user { align-self: flex-end; }
+.chat-msg.assistant { align-self: flex-start; }
+.chat-bubble {
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+.user .chat-bubble {
+  background: rgba(34,211,238,0.18);
+  color: var(--text);
+  border: 1px solid rgba(34,211,238,0.25);
+}
+.assistant .chat-bubble {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.chat-meta {
+  font-size: 0.7rem;
+  color: var(--muted);
+  padding: 0 4px;
+}
+.chat-bar {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid var(--bg);
+  background: var(--card);
+}
+.chat-input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  min-width: 0;
+}
+.chat-send {
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.chat-clear {
+  background: var(--bg);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <div class="title">
+      <h1>🎓 MSE 1st Semester Dashboard</h1>
+      <p>RU • Materials Science & Engineering • 2025-26 Batch</p>
+      <div class="badge-row">
+        <span class="badge">📚 <span id="headerCourses">10</span> Courses</span>
+        <span class="badge">⭐ <span id="headerCredits">22</span> Credits</span>
+        <span class="badge">📝 <span id="headerMarks">450</span> Marks</span>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="value" id="headerStatCourses">10</div><div class="label">Courses</div></div>
+      <div class="stat"><div class="value" id="headerStatCredits">22</div><div class="label">Credits</div></div>
+      <div class="stat"><div class="value" id="headerStatMarks">450</div><div class="label">Marks</div></div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <section class="card">
+        <div class="card-header"><h2>📅 Weekly Routine Overview</h2></div>
+        <div class="card-body">
+          <div class="weekly-overview" id="weeklyOverview"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>📆 Selected Day</h2>
+          <div class="schedule-toolbar">
+            <select id="selectedDay" onchange="changeSelectedDay()" class="day-select">
+              <option value="0">Sunday</option>
+              <option value="1">Monday</option>
+              <option value="2">Tuesday</option>
+              <option value="3">Wednesday</option>
+              <option value="4">Thursday</option>
+            </select>
+            <button class="btn primary" onclick="openAddEvent()">+ Add Event</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="schedule-list" id="dailySchedule"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header"><h2>📚 Courses Overview</h2></div>
+        <div class="card-body">
+          <div class="courses" id="coursesList"></div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="sidebar">
+      <section class="card">
+        <div class="card-header"><h2>📊 Quick Stats</h2></div>
+        <div class="card-body">
+          <div class="quick-stats" id="quickStats"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header"><h2>📖 Resources</h2></div>
+        <div class="card-body">
+          <div class="resources">
+            <a href="01_Curriculum/MSE_First_Year_Semester_Curriculum_2025.pdf" class="resource">
+              <div class="resource-icon">📄</div>
+              <div>
+                <div class="resource-title">Curriculum 2025</div>
+                <div class="resource-path">01_Curriculum/</div>
+              </div>
+            </a>
+            <a href="02_Resources/Textbooks/Callister_Fundamentals_Materials_Science_Engineering_5th_Edition.pdf" class="resource">
+              <div class="resource-icon">📘</div>
+              <div>
+                <div class="resource-title">Callister 5th</div>
+                <div class="resource-path">02_Resources/</div>
+              </div>
+            </a>
+            <a href="03_Courses" class="resource">
+              <div class="resource-icon">📂</div>
+              <div>
+                <div class="resource-title">Course Folders</div>
+                <div class="resource-path">03_Courses/</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+    </aside>
+  </div>
+</div>
+
+<!-- Modal: Add/Edit Event -->
+<div class="modal" id="eventModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalTitle">Add Event</h3>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Day</label>
+        <select id="eventDay">
+          <option value="0">Sunday</option>
+          <option value="1">Monday</option>
+          <option value="2">Tuesday</option>
+          <option value="3">Wednesday</option>
+          <option value="4">Thursday</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="form-group">
+          <label>Start Time</label>
+          <input type="time" id="eventStart" value="10:00">
+        </div>
+        <div class="form-group">
+          <label>End Time</label>
+          <input type="time" id="eventEnd" value="11:00">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Title</label>
+        <input type="text" id="eventTitle" placeholder="e.g. Introduction to MSE">
+      </div>
+      <div class="form-group">
+        <label>Teacher (Optional)</label>
+        <input type="text" id="eventTeacher" placeholder="e.g. A.A. Mamun Sir">
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <select id="eventType">
+          <option value="class">Class</option>
+          <option value="lab">Lab</option>
+          <option value="study">Study</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-actions">
+        <button class="btn" onclick="closeModal()">Cancel</button>
+        <button class="btn primary" onclick="saveEvent()">Save Event</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Raw Text Editor -->
+<div class="modal" id="rawModal">
+  <div class="modal-content" style="max-width:720px">
+    <div class="modal-header">
+      <h3>Edit Weekly Routine (Raw Text)</h3>
+      <button class="modal-close" onclick="closeRawModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Paste your routine in this format:</label>
+        <textarea id="rawEditor" placeholder="Sunday\n10.15-11.15\nIntroduction to MSE\nA.A.Mamun Sir\n\nMonday\n09.00-10.00\nMathematics\nProf. Rahman"></textarea>
+      </div>
+      <div style="font-size:0.75rem;color:var(--muted);margin-bottom:12px;">
+        Format: <code>Day → Time → Course → Teacher</code>. Leave blank lines between classes. Date is optional.
+      </div>
+      <div class="form-actions">
+        <button class="btn danger" onclick="clearRoutine()">Clear All</button>
+        <button class="btn" onclick="closeRawModal()">Cancel</button>
+        <button class="btn primary" onclick="updateRoutineFromText()">Update Routine</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday'];
+const types = { class: 'Class', lab: 'Lab', study: 'Study', other: 'Other' };
+
+const courses = [
+  { code: 'MSE1111', title: 'Introduction to MSE', teacher: 'A.A. Mamun Sir', credits: 2, marks: 50, type: 'class' },
+  { code: 'MSE1121', title: 'Crystallography I', teacher: 'Jesmin Sultana Mam', credits: 2, marks: 50, type: 'class' },
+  { code: 'MSE1122', title: 'Crystallography I Sessional', teacher: '', credits: 1, marks: 25, type: 'lab' },
+  { code: 'MATH1111', title: 'Matrices, Vector Analysis and Geometry', teacher: '', credits: 3, marks: 75, type: 'class' },
+  { code: 'PHY1111', title: 'Electricity and Magnetism', teacher: 'Mijanur Rahman Sir', credits: 3, marks: 75, type: 'class' },
+  { code: 'PHY1112', title: 'Electricity and Magnetism Sessional', teacher: '', credits: 1, marks: 25, type: 'lab' },
+  { code: 'CHEM1111', title: 'Organic Chemistry', teacher: '', credits: 2, marks: 50, type: 'class' },
+  { code: 'CHEM1112', title: 'Organic Chemistry Sessional', teacher: '', credits: 1, marks: 25, type: 'lab' },
+  { code: 'ENG1111', title: 'Technical and Communicative English', teacher: '', credits: 2, marks: 50, type: 'class' },
+  { code: 'MSE1112', title: 'Engineering Drawing', teacher: '', credits: 1, marks: 25, type: 'lab' }
+];
+
+let events = [];
+let weekExpanded = true;
+let editingEventId = null;
+let currentDay = 0;
+
+function loadEvents() {
+  let saved = null;
+  try {
+    const raw = localStorage.getItem('mse_routines');
+    if (raw) saved = JSON.parse(raw);
+  } catch (e) {
+    saved = null;
+  }
+  if (!Array.isArray(saved) || saved.length === 0) {
+    events = [
+      { id: 'sunday-1', title: 'Introduction to MSE', teacher: 'A.A. Mamun Sir', type: 'class', dayIndex: 0, start: '10:15', end: '11:15' },
+      { id: 'sunday-2', title: 'Crystallography', teacher: 'Jesmin Sultana Mam', type: 'class', dayIndex: 0, start: '11:20', end: '12:20' }
+    ];
+  } else {
+    events = saved;
+  }
+}
+
+function saveEvents() {
+  localStorage.setItem('mse_routines', JSON.stringify(events));
+}
+
+function getEventsForDay(dayIndex) {
+  return events
+    .filter(e => e.dayIndex === dayIndex)
+    .sort((a, b) => (a.start || '').localeCompare(b.start || ''));
+}
+
+function renderCourses() {
+  const container = document.getElementById('coursesList');
+  if (!courses.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">No courses available</div></div>';
+    return;
+  }
+  container.innerHTML = courses.map(c => {
+    const isSessional = c.code.endsWith('12');
+    const breakdown = isSessional
+      ? [
+          { label: 'Attendance / Continuous', value: '10%' },
+          { label: 'Quizzes / Viva / CA', value: '20%' },
+          { label: 'Practical Exam / Design / Report', value: '70%' }
+        ]
+      : [
+          { label: 'CT / Quizzes / Attendance', value: '30%' },
+          { label: 'Mid / Sessional Exam', value: '20%' },
+          { label: 'Final Examination', value: '50%' }
+        ];
+    return `
+    <div class="course">
+      <div class="course-head">
+        <div class="course-code">${c.code}</div>
+        <div class="course-credits">${c.credits} cr</div>
+      </div>
+      <div class="course-title">${c.title}</div>
+      <div class="course-teacher">${c.teacher || 'Not assigned'}</div>
+      <div class="course-meta">
+        <span>${c.marks} marks</span>
+        <span>${c.type}</span>
+      </div>
+      <div class="mark-breakdown">
+        ${breakdown.map(item => `
+          <div class="mark-breakdown-item">
+            <span class="label">${item.label}</span>
+            <span class="value">${item.value}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  }).join('');
+}
+
+function renderWeeklyOverview() {
+  const container = document.getElementById('weeklyOverview');
+
+  let html = '<div class="overview-grid">';
+  days.forEach((dayName, dayIndex) => {
+    const dayEvents = getEventsForDay(dayIndex);
+    html += `<div class="overview-day">`;
+    html += `<div class="overview-day-header">${dayName}</div>`;
+    html += `<div class="overview-tasks">`;
+
+    if (dayEvents.length === 0) {
+      html += `<div class="overview-empty">No tasks</div>`;
+    } else {
+      dayEvents.forEach(e => {
+        const time = `${e.start || '?'}${e.end ? '-' + e.end : ''}`;
+        html += `
+          <div class="overview-task">
+            <div class="overview-task-primary">
+              <div class="overview-task-head">
+                <div class="overview-task-title">${e.title}</div>
+                <div style="display:flex;align-items:center;gap:4px;">
+                  <div class="overview-task-time">${time}</div>
+                  <button class="overview-delete" onclick="deleteEvent('${e.id}')" title="Delete">✕</button>
+                </div>
+              </div>
+              ${e.teacher ? `<div class="overview-task-teacher">${e.teacher}</div>` : ''}
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    html += `</div>`;
+    html += `<button class="btn primary" onclick="openModalForDay(${dayIndex})" style="margin:8px;">+ Add</button>`;
+    html += `</div>`;
+  });
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+function toggleWeekView() {}
+
+function renderDailySchedule() {
+  const container = document.getElementById('dailySchedule');
+  const dayEvents = getEventsForDay(currentDay);
+
+  if (!dayEvents.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📅</div>
+        <div class="empty-text">No events for ${days[currentDay]}</div>
+        <button class="btn primary" onclick="openAddEvent()" style="margin-top:10px;">+ Add Event</button>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = dayEvents.map(e => `
+    <div class="schedule-item">
+      <div class="time-badge">${e.start || '?'}${e.end ? '-' + e.end : ''}</div>
+      <div class="schedule-info">
+        <div class="schedule-course">${e.title}</div>
+        ${e.teacher ? `<div class="schedule-teacher">${e.teacher}</div>` : ''}
+      </div>
+      <span class="schedule-type type-${e.type}">${types[e.type] || e.type}</span>
+      <button class="btn" onclick="openEditModal('${e.id}')" style="padding:4px 8px;font-size:0.7rem;">✏️</button>
+      <button class="btn danger" onclick="deleteEvent('${e.id}')" style="padding:4px 8px;font-size:0.7rem;">×</button>
+    </div>
+  `).join('');
+}
+
+function changeSelectedDay() {
+  currentDay = parseInt(document.getElementById('selectedDay').value, 10);
+  renderDailySchedule();
+}
+
+function openAddEvent() {
+  editingEventId = null;
+  document.getElementById('modalTitle').textContent = 'Add Event';
+  document.getElementById('eventModal').classList.add('active');
+  document.getElementById('eventDay').value = String(currentDay);
+  document.getElementById('eventStart').value = '10:00';
+  document.getElementById('eventEnd').value = '11:00';
+  document.getElementById('eventTitle').value = '';
+  document.getElementById('eventTeacher').value = '';
+  document.getElementById('eventType').value = 'class';
+}
+
+function openModalForSlot(day, hour) {
+  editingEventId = null;
+  document.getElementById('modalTitle').textContent = 'Add Event';
+  document.getElementById('eventModal').classList.add('active');
+  document.getElementById('eventDay').value = String(day);
+  document.getElementById('eventStart').value = `${hour}:00`;
+  const endHour = (parseInt(hour, 10) + 1).toString().padStart(2, '0');
+  document.getElementById('eventEnd').value = `${endHour}:00`;
+  document.getElementById('eventTitle').value = '';
+  document.getElementById('eventTeacher').value = '';
+  document.getElementById('eventType').value = 'class';
+}
+
+function openModalForDay(day) {
+  editingEventId = null;
+  document.getElementById('modalTitle').textContent = 'Add Event';
+  document.getElementById('eventModal').classList.add('active');
+  document.getElementById('eventDay').value = String(day);
+  document.getElementById('eventStart').value = '';
+  document.getElementById('eventEnd').value = '';
+  document.getElementById('eventTitle').value = '';
+  document.getElementById('eventTeacher').value = '';
+  document.getElementById('eventType').value = 'class';
+}
+
+function openEditModal(id) {
+  const ev = events.find(e => e.id === id);
+  if (!ev) return;
+  editingEventId = id;
+  document.getElementById('modalTitle').textContent = 'Edit Event';
+  document.getElementById('eventModal').classList.add('active');
+  document.getElementById('eventDay').value = String(ev.dayIndex);
+  document.getElementById('eventStart').value = ev.start || '';
+  document.getElementById('eventEnd').value = ev.end || '';
+  document.getElementById('eventTitle').value = ev.title || '';
+  document.getElementById('eventTeacher').value = ev.teacher || '';
+  document.getElementById('eventType').value = ev.type || 'class';
+}
+
+function closeModal() {
+  document.getElementById('eventModal').classList.remove('active');
+  editingEventId = null;
+}
+
+function saveEvent() {
+  const day = document.getElementById('eventDay').value;
+  const start = document.getElementById('eventStart').value;
+  const end = document.getElementById('eventEnd').value;
+  const title = document.getElementById('eventTitle').value.trim();
+  const teacher = document.getElementById('eventTeacher').value.trim();
+  const type = document.getElementById('eventType').value;
+  if (!title || !day) {
+    alert('Please fill in at least the title and day.');
+    return;
+  }
+
+  if (editingEventId) {
+    const ev = events.find(e => e.id === editingEventId);
+    if (ev) {
+      ev.dayIndex = parseInt(day, 10);
+      ev.start = start;
+      ev.end = end;
+      ev.title = title;
+      ev.teacher = teacher;
+      ev.type = type;
+    }
+  } else {
+    events.push({
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+      dayIndex: parseInt(day, 10),
+      start,
+      end,
+      title,
+      teacher,
+      type
+    });
+  }
+
+  saveEvents();
+  renderWeeklyOverview();
+  renderDailySchedule();
+  closeModal();
+}
+
+function deleteEvent(id) {
+  if (!confirm('Delete this event?')) return;
+  events = events.filter(e => e.id !== id);
+  saveEvents();
+  renderWeeklyOverview();
+  renderDailySchedule();
+}
+
+function formatRoutineText() {
+  const lines = [];
+  events.forEach(e => {
+    const dateStr = new Date().toISOString().slice(0, 10);
+    lines.push(dateStr);
+    lines.push(days[e.dayIndex] || '');
+    lines.push((e.start || '*.*') + '-' + (e.end || '*.*'));
+    lines.push(e.title || '');
+    lines.push(e.teacher || '');
+    lines.push('');
+  });
+  return lines.join('\n');
+}
+
+function openRawEditor() {
+  document.getElementById('rawEditor').value = formatRoutineText();
+  document.getElementById('rawModal').classList.add('active');
+}
+
+function closeRawModal() {
+  document.getElementById('rawModal').classList.remove('active');
+}
+
+function updateRoutineFromText() {
+  const text = document.getElementById('rawEditor').value.trim();
+  if (!text) return;
+  const blocks = text.split(/\n\s*\n/);
+  const newEvents = [];
+  blocks.forEach(block => {
+    const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+    if (lines.length < 3) return;
+    const dayName = (lines[0] || '').toLowerCase();
+    const timeLine = (lines[1] || '');
+    let title = (lines[2] || '').trim();
+    let teacher = (lines[3] || '').trim();
+    const dayIndex = days.findIndex(d => d.toLowerCase() === dayName);
+    if (dayIndex < 0) return;
+    let start = '', end = '';
+    if (timeLine.includes('-')) {
+      const parts = timeLine.split('-');
+      start = (parts[0] || '').trim();
+      end = (parts[1] || '').trim();
+    }
+    if (!title) return;
+    newEvents.push({
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+      dayIndex,
+      start,
+      end,
+      title,
+      teacher,
+      type: 'class'
+    });
+  });
+  if (newEvents.length) {
+    events = newEvents;
+    saveEvents();
+    renderWeeklyOverview();
+    renderDailySchedule();
+  }
+  closeRawModal();
+}
+
+function clearRoutine() {
+  if (!confirm('Clear all events?')) return;
+  events = [];
+  saveEvents();
+  renderWeeklyCalendar();
+  renderDailySchedule();
+  document.getElementById('rawEditor').value = '';
+}
+
+function updateStats() {
+  const totalCredits = courses.reduce((sum, c) => sum + Number(c.credits), 0);
+  const totalMarks = courses.reduce((sum, c) => sum + Number(c.marks), 0);
+  document.getElementById('quickStats').innerHTML = `
+    <div class="quick-stat"><div class="value">${totalCredits}</div><div class="label">Credits</div></div>
+    <div class="quick-stat"><div class="value">${totalMarks}</div><div class="label">Marks</div></div>
+    <div class="quick-stat"><div class="value">${courses.length}</div><div class="label">Courses</div></div>
+  `;
+
+  const coursesEl = document.getElementById('headerCourses');
+  const creditsEl = document.getElementById('headerCredits');
+  const marksEl = document.getElementById('headerMarks');
+  const statCoursesEl = document.getElementById('headerStatCourses');
+  const statCreditsEl = document.getElementById('headerStatCredits');
+  const statMarksEl = document.getElementById('headerStatMarks');
+
+  if (coursesEl) coursesEl.textContent = String(courses.length);
+  if (creditsEl) creditsEl.textContent = String(totalCredits);
+  if (marksEl) marksEl.textContent = String(totalMarks);
+  if (statCoursesEl) statCoursesEl.textContent = String(courses.length);
+  if (statCreditsEl) statCreditsEl.textContent = String(totalCredits);
+  if (statMarksEl) statMarksEl.textContent = String(totalMarks);
+}
+
+function init() {
+  loadEvents();
+  renderCourses();
+  renderWeeklyOverview();
+  renderDailySchedule();
+  updateStats();
+
+  document.getElementById('selectedDay').addEventListener('change', changeSelectedDay);
+}
+
+init();
+</script>
+</body>
+</html>

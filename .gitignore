@@ -1,0 +1,12 @@
+# D:\Academic\.gitignore
+
+# OS / editor junk
+Thumbs.db
+*.tmp
+*.lnk
+*.DS_Store
+
+# Media
+*.jpg
+*.jpeg
+*.png
