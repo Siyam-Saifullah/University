@@ -6,1569 +6,345 @@
 <title>MSE 1st Semester | RU 2025-26</title>
 <style>
 :root {
-  --bg: #0B0F1A;
-  --card: #111827;
-  --border: #1F2937;
-  --text: #F3F4F6;
-  --muted: #9CA3AF;
-  --accent: #22D3EE;
-  --success: #34D399;
-  --warning: #FBBF24;
-  --danger: #F87171;
-}
-
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-}
-
-.container { max-width: 1200px; margin: 0 auto; padding: 16px; }
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 16px;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.title h1 { font-size: 1.4rem; font-weight: 700; }
-
-.title p { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
-
-.badge-row { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
-
-.badge {
-  background: var(--card);
-  color: var(--accent);
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  border: 1px solid var(--border);
-}
-
-.badge.warn { color: var(--warning); border-color: rgba(251,191,36,0.3); }
-
-.stats { display: flex; gap: 10px; flex-wrap: wrap; }
-
-.stat {
-  background: var(--card);
-  border: 1px solid var(--border);
-  padding: 10px 14px;
-  border-radius: 10px;
-  text-align: center;
-  min-width: 72px;
-}
-
-.stat .value {
-  font-family: ui-monospace, monospace;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--accent);
-}
-
-.stat .label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; }
-
-.layout {
-  display: grid;
-  grid-template-columns: 1fr 280px;
-  gap: 16px;
-}
-
-@media (max-width: 960px) { .layout { grid-template-columns: 1fr; } }
-
-/* Mobile app shell */
-.mobile-shell { display: none; }
-
-@media (max-width: 520px) {
-  .mobile-shell {
-    display: block;
-    position: fixed;
-    inset: 0;
-    background: var(--bg);
-    color: var(--text);
-    z-index: 2000;
-  }
-  #desktopLayout { display: none !important; }
-  .mobile-header {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: rgba(11,15,26,0.92);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 16px 10px;
-  }
-  .mobile-header h1 { font-size: 1.1rem; font-weight: 800; margin: 0; }
-  .mobile-header p { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
-  .mobile-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(17,24,39,0.95);
-    backdrop-filter: blur(10px);
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-around;
-    padding: 10px 6px;
-    z-index: 20;
-  }
-  .mobile-nav button {
-    background: transparent;
-    border: none;
-    color: var(--muted);
-    font-size: 0.7rem;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    align-items: center;
-    min-width: 64px;
-    padding: 4px 8px;
-    border-radius: 10px;
-    font-weight: 700;
-  }
-  .mobile-nav button.active { color: var(--accent); }
-  .mobile-screen {
-    display: none;
-    padding: 14px 14px 96px;
-  }
-  .mobile-screen.active { display: block; }
-  .m-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 10px;
-  }
-  .m-card-header {
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--bg);
-    background: #111827;
-    font-weight: 700;
-    font-size: 0.85rem;
-  }
-  .m-list { display: flex; flex-direction: column; gap: 8px; padding: 10px 12px; }
-  .m-item {
-    background: #0F172A;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px 12px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .m-item-time {
-    font-family: ui-monospace, monospace;
-    color: var(--accent);
-    font-weight: 700;
-    font-size: 0.8rem;
-    min-width: 90px;
-  }
-  .m-item-info { flex: 1; }
-  .m-item-title { font-weight: 700; font-size: 0.85rem; }
-  .m-item-sub { font-size: 0.75rem; color: var(--muted); }
-  .m-add-row {
-    display: flex;
-    gap: 8px;
-    padding: 10px 12px;
-    border-top: 1px solid var(--bg);
-  }
-  .m-add-row .btn { flex: 1; }
-}
-
-@media (max-width: 768px) {
-  .container { padding: 12px; }
-  .title h1 { font-size: 1.15rem; }
-  .title p { font-size: 0.78rem; }
-  .badge, .stat { font-size: 0.72rem; padding: 6px 10px; }
-  .courses { grid-template-columns: 1fr; }
-  .overview-grid { grid-template-columns: repeat(3, minmax(150px, 1fr)); }
-  .weekly-calendar { grid-template-columns: 40px repeat(5, 1fr); overflow-x: auto; }
-  .chat-log { max-height: 220px; }
-  .schedule-item { padding: 10px 12px; }
-  .mark-breakdown-item { font-size: 0.7rem; padding: 6px 8px; }
-}
-
-@media (max-width: 520px) {
-  :root { --card-radius: 10px; }
-  .container { padding: 10px; }
-  .title h1 { font-size: 1.02rem; }
-  .header { flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 10px; padding-bottom: 4px; }
-  .stats { width: 100%; }
-  .stat { flex: 1; min-width: 0; padding: 8px 6px; }
-  .stat .value { font-size: 0.95rem; }
-  .stat .label { font-size: 0.62rem; }
-  .card + .card { margin-top: 10px; }
-  .card-header { padding: 10px 12px; }
-  .card-header h2 { font-size: 0.85rem; }
-  .card-body { padding: 10px; }
-  .courses { grid-template-columns: 1fr; gap: 8px; }
-  .course { padding: 10px 10px; }
-  .course-title { font-size: 0.82rem; }
-  .course-teacher { font-size: 0.72rem; margin-bottom: 6px; }
-  .course-meta { gap: 4px; }
-  .mark-breakdown { display: none; }
-  .course:hover .mark-breakdown, .course:focus-within .mark-breakdown { display: flex; }
-  .overview-grid { grid-template-columns: repeat(3, minmax(120px, 1fr)); gap: 1px; }
-  .overview-day-header { font-size: 0.65rem; padding: 5px 4px; }
-  .overview-tasks { padding: 6px; min-height: 80px; }
-  .overview-task { padding: 5px 6px; margin-bottom: 3px; }
-  .overview-task-title { font-size: 0.7rem; }
-  .overview-task-time { font-size: 0.63rem; }
-  .weekly-calendar { grid-template-columns: 34px repeat(5, 1fr); min-width: 480px; }
-  .time-cell, .event-dot { font-size: 0.65rem; padding: 2px 4px; }
-  .schedule-item { padding: 10px 12px; }
-  .schedule-course { font-size: 0.85rem; }
-  .schedule-toolbar { flex-direction: column; align-items: stretch; gap: 8px; }
-  .day-select, .btn.primary { width: 100%; }
-  .chat-log { max-height: 180px; }
-  .chat-bubble { font-size: 0.82rem; padding: 10px 12px; }
-  .chat-input { font-size: 0.82rem; padding: 10px 12px; }
-  .chat-send, .chat-clear { padding: 10px 12px; font-size: 0.82rem; }
-  .resource-title, .resource-path { font-size: 0.78rem; }
-  .modal-content { max-width: 100%; }
-  .form-group label { font-size: 0.75rem; }
-  .form-group input, .form-group select, .form-group textarea { font-size: 0.82rem; padding: 8px; }
-  .btn { padding: 7px 10px; font-size: 0.75rem; }
-}
-
-.card + .card { margin-top: 14px; }
-
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 14px;
-  border-bottom: 1px solid var(--bg);
-  background: #111827;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.card-header h2 { font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-
-.card-body { padding: 14px; }
-
-.courses { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
-
-.course {
-  background: linear-gradient(180deg, rgba(17,24,39,0.0), rgba(17,24,39,0.85));
-  border: 1px solid var(--course-border, var(--border));
-  border-radius: 14px;
-  padding: 14px;
-  transition: transform 0.18s, border-color 0.2s, box-shadow 0.2s;
-  cursor: default;
-  position: relative;
-  overflow: hidden;
-}
-
-.course:hover {
-  transform: translateY(-2px) scale(1.01);
-  border-color: var(--course-accent, var(--accent));
-  box-shadow: 0 18px 40px rgba(0,0,0,0.45), 0 0 24px rgba(var(--course-accent-rgb, 34,211,238), 0.25);
-}
-
-.course-glow {
-  position: absolute;
-  left: -30px;
-  top: -30px;
-  width: 90px;
-  height: 90px;
-  background: radial-gradient(circle, var(--course-accent-rgb, 34,211,238), transparent 70%);
-  opacity: 0.12;
-  pointer-events: none;
-  filter: blur(10px);
-}
-
-.course-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-.course-code { font-family: ui-monospace, monospace; font-size: 0.75rem; font-weight: 800; color: var(--course-accent, var(--accent)); background: rgba(34,211,238,0.1); padding: 3px 8px; border-radius: 6px; letter-spacing: 0.04em; }
-.course-credits { font-size: 0.7rem; color: var(--muted); background: var(--bg); padding: 3px 8px; border-radius: 999px; border: 1px solid var(--border); font-weight: 700; font-family: ui-monospace, monospace; }
-.course-title { font-size: 0.9rem; font-weight: 700; margin: 6px 0; color: var(--text); }
-.course-teacher { font-size: 0.78rem; color: var(--muted); margin-bottom: 10px; font-style: italic; }
-
-.course-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-.course-meta .pill { background: var(--bg); padding: 4px 8px; border-radius: 999px; font-size: 0.7rem; color: var(--muted); border: 1px solid var(--border); font-weight: 500; }
-.course-type { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
-.course-type.class { background: rgba(99,102,241,0.15); color: #c7d2fe; border: 1px solid rgba(129,140,248,0.35); }
-.course-type.lab { background: rgba(236,72,153,0.15); color: #fbcfe8; border: 1px solid rgba(244,114,182,0.35); }
-
-.course-score { margin-top: 12px; }
-.course-score-header { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--muted); margin-bottom: 5px; }
-.course-score-header strong { color: var(--text); }
-.course-score-bar { height: 8px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 999px; overflow: hidden; }
-.course-score-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--course-accent, var(--accent)), rgba(255,255,255,0.2)); background-size: 200% 100%; transition: width 0.4s; }
-
-.mark-breakdown { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
-.mark-breakdown-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.72rem; color: var(--muted); background: var(--bg); padding: 6px 8px; border-radius: 8px; border: 1px solid var(--border); }
-.mark-breakdown-item .label { flex: 1; }
-.mark-breakdown-item .value { font-family: ui-monospace, monospace; font-weight: 800; color: var(--course-accent, var(--accent)); background: rgba(34,211,238,0.08); padding: 2px 8px; border-radius: 6px; font-size: 0.7rem; }
-
-/* Weekly Overview */
-.weekly-overview {
-  overflow-x: auto;
-}
-
-.overview-grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(180px, 1fr));
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.overview-day {
-  background: var(--card);
-  display: flex;
-  flex-direction: column;
-}
-
-.overview-day-header {
-  background: rgba(0,0,0,0.35);
-  padding: 8px;
-  text-align: center;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  color: #94a3b8;
-  letter-spacing: 0.08em;
-  border-bottom: 1px solid var(--border);
-}
-
-.overview-tasks {
-  padding: 8px;
-  min-height: 100px;
-}
-
-.overview-task {
-  background: rgba(34,211,238,0.1);
-  border: 1px solid rgba(34,211,238,0.15);
-  color: var(--text);
-  padding: 6px 8px;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  margin-bottom: 4px;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  position: relative;
-}
-
-.overview-task:hover .overview-delete {
-  display: inline-block;
-}
-
-.overview-task-primary {
-  width: 100%;
-}
-
-.overview-task-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 6px;
-  width: 100%;
-}
-
-.overview-task-title {
-  font-weight: 600;
-  font-size: 0.78rem;
-  line-height: 1.3;
-  word-break: break-word;
-}
-
-.overview-task-time {
-  font-family: ui-monospace, monospace;
-  color: var(--accent);
-  font-weight: 700;
-  font-size: 0.7rem;
-  white-space: nowrap;
-}
-
-.overview-task-teacher {
-  font-size: 0.7rem;
-  color: var(--muted);
-  margin-top: 0px;
-  word-break: break-word;
-}
-
-.overview-delete {
-  display: none;
-  background: transparent;
-  border: none;
-  color: #f87171;
-  cursor: pointer;
-  font-size: 0.7rem;
-  padding: 0;
-  margin-left: 4px;
-}
-
-.overview-empty {
-  color: var(--muted);
-  font-size: 0.75rem;
-  font-style: italic;
-  padding: 10px 0;
-  text-align: center;
-}
-
-.overview-day .btn.primary {
-  margin: 6px;
-  padding: 4px 8px;
-  font-size: 0.7rem;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.overview-day:hover .btn.primary {
-  opacity: 1;
-}
-
-/* Class Tracker */
-.tracker-list { display: flex; flex-direction: column; gap: 10px; }
-.tracker-row {
-  background: #111827;
-  border: 1px solid var(--bg);
-  border-radius: 10px;
-  padding: 12px;
-}
-.tracker-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 8px;
-}
-.tracker-title { font-weight: 600; font-size: 0.9rem; }
-.tracker-meta { font-size: 0.75rem; color: var(--muted); }
-.tracker-bar {
-  height: 8px;
-  background: var(--bg);
-  border-radius: 999px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  margin: 8px 0 6px;
-}
-.tracker-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--success));
-  border-radius: 999px;
-}
-.tracker-controls {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.tracker-count {
-  font-family: ui-monospace, monospace;
-  font-weight: 700;
-  color: var(--accent);
-  font-size: 0.85rem;
-  min-width: 80px;
-  text-align: center;
-  background: var(--bg);
-  padding: 6px 8px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-}
-.tracker-note { margin-top: 10px; }
-.tracker-note label {
-  display: block;
-  font-size: 0.75rem;
-  color: var(--muted);
-  margin-bottom: 6px;
-}
-.note-editor {
-  width: 100%;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 10px;
-  border-radius: 10px;
-  font-size: 0.85rem;
-  resize: vertical;
-  min-height: 72px;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-}
-
-/* Weekly Calendar */
-.weekly-wrapper { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-
-.weekly-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 14px;
-  background: #111827;
-  border-bottom: 1px solid var(--bg);
-}
-
-.weekly-header h3 { font-size: 0.9rem; font-weight: 600; }
-.weekly-toolbar { display: flex; gap: 8px; align-items: center; }
-
-.weekly-calendar {
-  display: grid;
-  grid-template-columns: 52px repeat(7, 1fr);
-  gap: 1px;
-  background: var(--bg);
-  max-height: 280px;
-  overflow-y: auto;
-}
-
-.weekly-calendar.compact .day-column:not(.has-events),
-.weekly-calendar.compact .time-row:not(.time-header) { display: none; }
-
-.day-column { background: var(--card); }
-.day-column.has-events { background: #0F172A; }
-
-.day-header {
-  background: rgba(0,0,0,0.35);
-  padding: 6px;
-  text-align: center;
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: var(--muted);
-  text-transform: uppercase;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.day-column.has-events .day-header { color: var(--accent); }
-
-.time-cell {
-  padding: 4px;
-  font-size: 0.65rem;
-  color: var(--muted);
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 32px;
-  background: rgba(0,0,0,0.2);
-}
-
-.time-header {
-  font-weight: 700;
-  background: rgba(0,0,0,0.4) !important;
-}
-
-.event-dot {
-  background: rgba(34,211,238,0.15);
-  color: var(--accent);
-  border: 1px solid rgba(34,211,238,0.25);
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  margin: 2px 0;
-  cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.event-dot:hover { background: rgba(34,211,238,0.25); }
-
-.cell-add {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: none;
-  background: var(--accent);
-  color: var(--bg);
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 2px;
-  opacity: 0.85;
-  transition: transform 0.15s, opacity 0.15s;
-}
-
-.cell-add:hover { transform: scale(1.1); opacity: 1; }
-.day-column:hover .cell-add { opacity: 1; }
-
-.schedule-toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-
-.day-select {
-  background: var(--bg);
-  color: var(--text);
-  border: 1px solid var(--border);
-  padding: 8px 10px;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  min-width: 140px;
-}
-
-.schedule-list { display: flex; flex-direction: column; gap: 10px; }
-
-.schedule-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  background: #111827;
-  border: 1px solid var(--bg);
-  border-radius: 10px;
-  position: relative;
-  transition: all 0.2s;
-}
-
-.schedule-item:hover { border-color: var(--border); }
-
-.schedule-item::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: var(--accent);
-  border-radius: 10px 0 0 10px;
-}
-
-.time-badge {
-  background: var(--bg);
-  color: var(--accent);
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  font-family: ui-monospace, monospace;
-  border: 1px solid var(--border);
-  white-space: nowrap;
-}
-
-.schedule-info { flex: 1; }
-.schedule-course { font-weight: 600; font-size: 0.9rem; margin-bottom: 2px; }
-.schedule-teacher { font-size: 0.8rem; color: var(--muted); }
-
-.schedule-type { font-size: 0.7rem; padding: 4px 10px; border-radius: 6px; font-weight: 700; }
-.type-class { background: rgba(34,211,238,0.15); color: var(--accent); }
-.type-lab { background: rgba(52,211,153,0.15); color: var(--success); }
-.type-study { background: rgba(251,191,36,0.15); color: var(--warning); }
-.type-other { background: rgba(248,113,113,0.15); color: var(--danger); }
-
-.empty-state { text-align: center; padding: 24px; color: var(--muted); }
-.empty-icon { font-size: 2rem; margin-bottom: 8px; opacity: 0.6; }
-.empty-text { font-size: 0.85rem; }
-
-.sidebar { display: flex; flex-direction: column; gap: 14px; }
-
-.quick-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-
-.quick-stat {
-  background: #111827;
-  padding: 10px;
-  border-radius: 10px;
-  text-align: center;
-  border: 1px solid var(--bg);
-}
-
-.quick-stat .value { font-family: ui-monospace, monospace; font-size: 1.1rem; font-weight: 700; color: var(--accent); }
-.quick-stat .label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; margin-top: 2px; }
-
-.resources { display: grid; grid-template-columns: 1fr; gap: 8px; }
-
-.resource {
-  background: #111827;
-  padding: 10px 12px;
-  border-radius: 10px;
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border: 1px solid var(--bg);
-  transition: all 0.2s;
-}
-
-.resource:hover { border-color: var(--border); transform: translateX(4px); }
-.resource-icon { font-size: 1.4rem; color: var(--accent); }
-.resource-title { font-size: 0.85rem; font-weight: 600; flex: 1; }
-.resource-path { font-size: 0.7rem; color: var(--muted); font-family: ui-monospace, monospace; }
-
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.82);
-  z-index: 1000;
-  padding: 20px;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(4px);
-}
-.modal.active { display: flex; }
-.modal-content {
-  background: var(--card);
-  border-radius: 14px;
-  max-width: 520px;
-  width: 100%;
-  max-height: 85vh;
-  overflow-y: auto;
-  border: 1px solid var(--border);
-}
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--bg);
-  background: #111827;
-}
-.modal-header h3 { font-size: 0.95rem; }
-.modal-close { background: none; border: none; color: var(--muted); font-size: 1.5rem; cursor: pointer; }
-.modal-body { padding: 14px; }
-.form-group { margin-bottom: 14px; }
-.form-group label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 4px; }
-.form-group input, .form-group select, .form-group textarea {
-  width: 100%;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 8px;
-  border-radius: 8px;
-  font-size: 0.85rem;
-}
-.form-group textarea { resize: vertical; min-height: 140px; font-family: ui-monospace, monospace; }
-.form-actions { display: flex; gap: 8px; justify-content: flex-end; }
-.btn {
-  padding: 8px 14px;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text);
-  transition: all 0.2s;
-}
-.btn.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 700; }
-.btn.danger { background: var(--danger); color: white; border-color: var(--danger); }
-.btn:hover { background: var(--border); }
-
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
- ::selection { background: rgba(34,211,238,0.25); }
-
-/* Chat */
-.chat-block { padding: 0; }
-.chat-log {
-  max-height: 260px;
-  overflow-y: auto;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.chat-log .empty-state { margin-top: 20px; }
-.chat-msg {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  max-width: 85%;
-}
-.chat-msg.user { align-self: flex-end; }
-.chat-msg.assistant { align-self: flex-start; }
-.chat-bubble {
-  padding: 10px 12px;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  line-height: 1.45;
-  white-space: pre-wrap;
-}
-.user .chat-bubble {
-  background: rgba(34,211,238,0.18);
-  color: var(--text);
-  border: 1px solid rgba(34,211,238,0.25);
-}
-.assistant .chat-bubble {
-  background: var(--bg);
-  color: var(--text);
-  border: 1px solid var(--border);
-}
-.chat-meta {
-  font-size: 0.7rem;
-  color: var(--muted);
-  padding: 0 4px;
-}
-.chat-bar {
-  display: flex;
-  gap: 8px;
-  padding: 12px;
-  border-top: 1px solid var(--bg);
-  background: var(--card);
-}
-.chat-input {
-  flex: 1;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 10px 12px;
-  border-radius: 10px;
-  font-size: 0.85rem;
-  min-width: 0;
-}
-.chat-send {
-  background: var(--accent);
-  color: var(--bg);
-  border: none;
-  padding: 10px 14px;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.chat-clear {
-  background: var(--bg);
-  color: var(--muted);
-  border: 1px solid var(--border);
-  padding: 10px 12px;
-  border-radius: 10px;
-  font-size: 0.8rem;
-  cursor: pointer;
-}
+  --bg:#0B0F1A;
+  --card:#111827;
+  --border:#1F2937;
+  --text:#F3F4F6;
+  --muted:#9CA3AF;
+  --accent:#22D3EE;
+  --accent-rgb:34,211,238;
+  --success:#34D399;
+  --warning:#FBBF24;
+  --danger:#F87171;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+.wrap{max-width:1200px;margin:0 auto;padding:16px}
+header{padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:16px;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px}
+.title h1{font-size:1.35rem;margin:0}
+.title p{margin:6px 0 0;color:var(--muted);font-size:.85rem}
+.badges{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.badge{background:var(--card);border:1px solid var(--border);color:var(--accent);padding:5px 10px;border-radius:999px;font-size:.75rem;font-weight:700}
+.stats{display:flex;gap:10px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 14px;text-align:center;min-width:72px}
+.stat .v{font-family:ui-monospace,monospace;font-size:1.15rem;font-weight:800;color:var(--accent)}
+.stat .l{font-size:.65rem;color:var(--muted);text-transform:uppercase;margin-top:4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:12px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.card-head{padding:12px 14px;border-bottom:1px solid var(--card);background:#111827;font-weight:700;font-size:.95rem;display:flex;justify-content:space-between;align-items:center}
+.card-body{padding:14px}
+.course{border:1px solid var(--border);border-radius:14px;padding:14px;background:linear-gradient(180deg,rgba(17,24,39,.0),rgba(17,24,39,.85));position:relative;overflow:hidden;transition:.2s}
+.course:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 18px 40px rgba(0,0,0,.45),0 0 24px rgba(var(--accent-rgb),.25)}
+.course-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.code{font-family:ui-monospace,monospace;font-size:.75rem;font-weight:800;color:var(--accent);background:rgba(var(--accent-rgb),.1);padding:3px 8px;border-radius:6px}
+.credits{font-size:.7rem;color:var(--muted);background:var(--bg);padding:3px 8px;border-radius:999px;font-weight:700;font-family:ui-monospace,monospace;border:1px solid var(--border)}
+.title-c{font-size:.9rem;font-weight:700;margin:6px 0}
+.teacher{font-size:.78rem;color:var(--muted);margin-bottom:10px;font-style:italic}
+.meta{display:flex;justify-content:space-between;align-items:center;font-size:.75rem;color:var(--muted);background:var(--bg);padding:6px 8px;border-radius:8px;border:1px solid var(--border)}
+.type-class{color:#c7d2fe;background:rgba(99,102,241,.15)}
+.type-lab{color:#fbcfe8;background:rgba(236,72,153,.15)}
+.marks{font-size:.72rem;color:var(--muted);margin-top:10px}
+.marks div{display:flex;justify-content:space-between;padding:5px 8px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-top:6px;font-size:.72rem}
+.k{flex:1;color:var(--muted)}
+.v{font-family:ui-monospace,monospace;font-weight:800;color:var(--accent);background:rgba(var(--accent-rgb),.08);padding:2px 8px;border-radius:6px}
+.overview{overflow-x:auto;margin-top:10px;border-radius:10px;border:1px solid var(--border)}
+.ogrid{display:grid;grid-template-columns:repeat(5,minmax(140px,1fr));min-width:640px;background:var(--border);gap:1px}
+.ocol{background:var(--card)}
+.oday{background:rgba(0,0,0,.35);padding:8px;text-align:center;font-weight:700;font-size:.75rem;color:#94a3b8;text-transform:uppercase;border-bottom:1px solid var(--border)}
+.ocontent{padding:8px;min-height:90px}
+.oevt{background:rgba(var(--accent-rgb),.12);border:1px solid rgba(var(--accent-rgb),.2);color:var(--text);padding:6px;border-radius:6px;font-size:.73rem;margin-bottom:6px;display:flex;justify-content:space-between;align-items:flex-start;gap:6px}
+.oevt-time{font-family:ui-monospace,monospace;color:var(--accent);font-weight:700;font-size:.68rem;white-space:nowrap}
+.oevt-name{font-weight:600;font-size:.73rem;line-height:1.3;word-break:break-word}
+.oempty{color:var(--muted);font-size:.73rem;font-style:italic;text-align:center;padding:8px 0}
+.daybar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.sel{background:var(--bg);color:var(--text);border:1px solid var(--border);padding:8px 10px;border-radius:8px;font-size:.85rem;min-width:140px;font-weight:700}
+.btn{padding:8px 14px;border-radius:8px;font-size:.8rem;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--bg);color:var(--text);transition:.15s}
+.btn:hover{background:var(--border)}
+.btn.primary{background:var(--accent);color:#000;border-color:var(--accent)}
+.dlist{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.ditem{display:flex;align-items:center;gap:12px;background:#111827;border:1px solid var(--card);border-radius:10px;padding:12px 14px;position:relative;transition:.2s}
+.ditem:hover{border-color:var(--border)}
+.ditem::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);border-radius:10px 0 0 10px}
+.tbadge{font-family:ui-monospace,monospace;color:var(--accent);padding:6px 10px;border-radius:8px;font-size:.8rem;font-weight:700;background:var(--bg);border:1px solid var(--border);white-space:nowrap}
+.dinfo{flex:1}
+.dname{font-weight:700;font-size:.9rem}
+.dsub{font-size:.8rem;color:var(--muted)}
+.dtag{font-size:.7rem;padding:4px 10px;border-radius:6px;font-weight:800}
+.tc{background:rgba(var(--accent-rgb),.15);color:var(--accent)}
+.tl{background:rgba(52,211,153,.15);color:var(--success)}
+.tl2{background:rgba(251,191,36,.15);color:var(--warning)}
+.to{background:rgba(248,113,113,.15);color:var(--danger)}
+.reslist{display:flex;flex-direction:column;gap:8px}
+.res{display:flex;align-items:center;gap:10px;background:#111827;border:1px solid var(--card);padding:10px 12px;border-radius:10px;text-decoration:none;color:inherit;transition:.2s}
+.res:hover{border-color:var(--border);transform:translateX(3px)}
+.res-icon{font-size:1.2rem;color:var(--accent)}
+.res-title{font-size:.85rem;font-weight:700;flex:1}
+.res-path{font-size:.7rem;color:var(--muted);font-family:ui-monospace,monospace}
+.mbtn{padding:6px 10px;border-radius:6px;border:1px solid rgba(248,113,113,.4);background:transparent;color:#f87171;cursor:pointer;font-size:.72rem}
+.mbtn:hover{background:rgba(248,113,113,.15)}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:1000;padding:20px;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal.show{display:flex}
+.mcontent{background:var(--card);border-radius:14px;max-width:520px;width:100%;max-height:85vh;overflow-y:auto;border:1px solid var(--border)}
+.mheader{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--card);background:#111827;border-radius:14px 14px 0 0}
+.mheader h3{font-size:.95rem;margin:0}
+.mclose{background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer}
+.mbody{padding:14px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:.8rem;color:var(--muted);margin-bottom:4px}
+.fg input,.fg select{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:8px;border-radius:8px;font-size:.85rem}
+.factions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:860px){.layout{grid-template-columns:1fr}.sidebar{order:2}}
+@media(max-width:540px){
+  header{flex-direction:column;align-items:flex-start}
+  .stats{width:100%}
+  .stat{flex:1;min-width:0;padding:8px 6px}
+  .stat .v{font-size:.95rem}
+  .stat .l{font-size:.62rem}
+  .wrap{padding:12px}
+  .grid{grid-template-columns:1fr}
+  .course{padding:10px}
+  .title-c{font-size:.82rem}
+  .teacher{font-size:.72rem;margin-bottom:6px}
+  .marks{display:none}
+  .overview{min-width:540px}
+  .ogrid{grid-template-columns:repeat(5,minmax(115px,1fr))}
+  .oevt{font-size:.7rem;padding:5px 6px}
+  .ditem{padding:10px 12px}
+  .tbadge{font-size:.72rem;padding:5px 8px}
+  .dname{font-size:.82rem}
+}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::selection{background:rgba(var(--accent-rgb),.25)}
+.empty{text-align:center;padding:20px;color:var(--muted);font-size:.85rem}
 </style>
 </head>
 <body>
-<div id="desktopLayout">
-<div class="mobile-shell" id="mobileShell">
-  <div class="mobile-header">
-    <h1>🎓 MSE 1st Semester</h1>
-    <p>RU • Materials Science & Engineering • 2025-26</p>
-  </div>
-
-  <div class="mobile-screen active" id="screen-routine">
-    <div class="m-card">
-      <div class="m-card-header">📅 Today</div>
-      <div class="m-list" id="mobileToday"></div>
-      <div class="m-add-row">
-        <button class="btn primary" onclick="openAddEvent()">+ Add Event</button>
-      </div>
-    </div>
-    <div class="m-card">
-      <div class="m-card-header">🗓 Week</div>
-      <div class="m-list" id="mobileWeek"></div>
-    </div>
-  </div>
-
-  <div class="mobile-screen" id="screen-courses">
-    <div id="mobileCourses"></div>
-  </div>
-
-  <div class="mobile-screen" id="screen-chat">
-    <div class="m-card chat-block">
-      <div class="m-card-header">💬 Study Assistant</div>
-      <div class="chat-log" id="mobileChatLog"></div>
-      <div class="chat-bar">
-        <input class="chat-input" id="mobileChatInput" placeholder="Ask anything..." />
-        <button class="chat-send" onclick="sendMobileChat()">Send</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="mobile-screen" id="screen-more">
-    <div class="m-card">
-      <div class="m-card-header">📊 Quick Stats</div>
-      <div class="m-list" id="mobileStats"></div>
-    </div>
-    <div class="m-card">
-      <div class="m-card-header">📖 Resources</div>
-      <div class="m-list">
-        <a class="m-item" style="text-decoration:none;color:inherit" href="01_Curriculum/MSE_First_Year_Semester_Curriculum_2025.pdf">
-          <div class="m-item-info"><div class="m-item-title">📄 Curriculum 2025</div><div class="m-item-sub">01_Curriculum/</div></div>
-        </a>
-        <a class="m-item" style="text-decoration:none;color:inherit" href="02_Resources/Textbooks/Callister_Fundamentals_Materials_Science_Engineering_5th_Edition.pdf">
-          <div class="m-item-info"><div class="m-item-title">📘 Callister 5th</div><div class="m-item-sub">02_Resources/</div></div>
-        </a>
-        <a class="m-item" style="text-decoration:none;color:inherit" href="03_Courses">
-          <div class="m-item-info"><div class="m-item-title">📂 Course Folders</div><div class="m-item-sub">03_Courses/</div></div>
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <nav class="mobile-nav" id="mobileNav">
-    <button class="active" onclick="switchMobileScreen('routine', this)">
-      <span>📋</span><span>Routine</span>
-    </button>
-    <button onclick="switchMobileScreen('courses', this)">
-      <span>📚</span><span>Courses</span>
-    </button>
-    <button onclick="switchMobileScreen('chat', this)">
-      <span>💬</span><span>Chat</span>
-    </button>
-    <button onclick="switchMobileScreen('more', this)">
-      <span>⋯</span><span>More</span>
-    </button>
-  </nav>
+<div class="wrap">
+<header>
+<div class="title">
+<h1>🎓 MSE 1st Semester Dashboard</h1>
+<p>RU • Materials Science & Engineering • 2025-26</p>
+<div class="badges">
+<span class="badge">📚 <span id="headerCourses">10</span> Courses</span>
+<span class="badge">⭐ <span id="headerCredits">18</span> Credits</span>
+<span class="badge">📝 <span id="headerMarks">450</span> Marks</span>
 </div>
-<div class="container">
-  <header class="header">
-    <div class="title">
-      <h1>🎓 MSE 1st Semester Dashboard</h1>
-      <p>RU • Materials Science & Engineering • 2025-26 Batch</p>
-      <div class="badge-row">
-        <span class="badge">📚 <span id="headerCourses">10</span> Courses</span>
-        <span class="badge">⭐ <span id="headerCredits">22</span> Credits</span>
-        <span class="badge">📝 <span id="headerMarks">450</span> Marks</span>
-      </div>
-    </div>
-    <div class="stats">
-      <div class="stat"><div class="value" id="headerStatCourses">10</div><div class="label">Courses</div></div>
-      <div class="stat"><div class="value" id="headerStatCredits">22</div><div class="label">Credits</div></div>
-      <div class="stat"><div class="value" id="headerStatMarks">450</div><div class="label">Marks</div></div>
-    </div>
-  </header>
+</div>
+<div class="stats">
+<div class="stat"><div class="v" id="sCourses">10</div><div class="l">Courses</div></div>
+<div class="stat"><div class="v" id="sCredits">18</div><div class="l">Credits</div></div>
+<div class="stat"><div class="v" id="sMarks">450</div><div class="l">Marks</div></div>
+</div>
+</header>
 
-  <div class="layout">
-    <main>
-      <section class="card">
-        <div class="card-header"><h2>📅 Weekly Routine Overview</h2></div>
-        <div class="card-body">
-          <div class="weekly-overview" id="weeklyOverview"></div>
-        </div>
-      </section>
+<div class="layout" style="display:grid;grid-template-columns:1fr 280px;gap:16px">
+<main>
+<section class="card">
+<div class="card-head"><div>📅 Weekly Routine</div></div>
+<div class="card-body">
+<div class="overview" id="weeklyOverview"></div>
+<div class="daybar">
+<select id="selectedDay" onchange="changeDay(this.value)" class="sel">
+<option value="0">Sunday</option>
+<option value="1">Monday</option>
+<option value="2">Tuesday</option>
+<option value="3">Wednesday</option>
+<option value="4">Thursday</option>
+</select>
+<button class="btn primary" onclick="openModal()">+ Add Event</button>
+</div>
+</div>
+</section>
 
-      <section class="card">
-        <div class="card-header">
-          <h2>📆 Selected Day</h2>
-          <div class="schedule-toolbar">
-            <select id="selectedDay" onchange="changeSelectedDay()" class="day-select">
-              <option value="0">Sunday</option>
-              <option value="1">Monday</option>
-              <option value="2">Tuesday</option>
-              <option value="3">Wednesday</option>
-              <option value="4">Thursday</option>
-            </select>
-            <button class="btn primary" onclick="openAddEvent()">+ Add Event</button>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="schedule-list" id="dailySchedule"></div>
-        </div>
-      </section>
+<section class="card">
+<div class="card-head"><div>📆 Selected Day Schedule</div></div>
+<div class="card-body">
+<div class="dlist" id="dailySchedule"></div>
+</div>
+</section>
 
-      <section class="card">
-        <div class="card-header"><h2>📚 Courses Overview</h2></div>
-        <div class="card-body">
-          <div class="courses" id="coursesList"></div>
-        </div>
-      </section>
-    </main>
+<section class="card">
+<div class="card-head"><div>📚 Courses</div></div>
+<div class="card-body">
+<div class="grid" id="coursesList"></div>
+</div>
+</section>
+</main>
 
-    <aside class="sidebar">
-      <section class="card">
-        <div class="card-header"><h2>📊 Quick Stats</h2></div>
-        <div class="card-body">
-          <div class="quick-stats" id="quickStats"></div>
-        </div>
-      </section>
+<aside class="sidebar">
+<section class="card">
+<div class="card-head"><div>📊 Quick Stats</div></div>
+<div class="card-body">
+<div class="stats" id="sidebarStats" style="flex-direction:column;gap:10px"></div>
+</div>
+</section>
 
-      <section class="card">
-        <div class="card-header"><h2>📖 Resources</h2></div>
-        <div class="card-body">
-          <div class="resources">
-            <a href="01_Curriculum/MSE_First_Year_Semester_Curriculum_2025.pdf" class="resource">
-              <div class="resource-icon">📄</div>
-              <div>
-                <div class="resource-title">Curriculum 2025</div>
-                <div class="resource-path">01_Curriculum/</div>
-              </div>
-            </a>
-            <a href="02_Resources/Textbooks/Callister_Fundamentals_Materials_Science_Engineering_5th_Edition.pdf" class="resource">
-              <div class="resource-icon">📘</div>
-              <div>
-                <div class="resource-title">Callister 5th</div>
-                <div class="resource-path">02_Resources/</div>
-              </div>
-            </a>
-            <a href="03_Courses" class="resource">
-              <div class="resource-icon">📂</div>
-              <div>
-                <div class="resource-title">Course Folders</div>
-                <div class="resource-path">03_Courses/</div>
-              </div>
-            </a>
-          </div>
-        </div>
-      </section>
-    </aside>
-  </div>
+<section class="card">
+<div class="card-head"><div>📖 Resources</div></div>
+<div class="card-body">
+<div class="reslist">
+<a href="01_Curriculum/MSE_First_Year_Semester_Curriculum_2025.pdf" class="res">
+<div class="res-icon">📄</div>
+<div><div class="res-title">Curriculum 2025</div><div class="res-path">01_Curriculum/</div></div>
+</a>
+<a href="02_Resources/Textbooks/Callister_Fundamentals_Materials_Science_Engineering_5th_Edition.pdf" class="res">
+<div class="res-icon">📘</div>
+<div><div class="res-title">Callister 5th</div><div class="res-path">02_Resources/Textbooks/</div></div>
+</a>
+<a href="03_Courses" class="res">
+<div class="res-icon">📂</div>
+<div><div class="res-title">Course Folders</div><div class="res-path">03_Courses/</div></div>
+</a>
+<a href="04_Study_Materials" class="res">
+<div class="res-icon">📚</div>
+<div><div class="res-title">Study Materials</div><div class="res-path">04_Study_Materials/</div></div>
+</a>
+<a href="06_Exams" class="res">
+<div class="res-icon">🗒</div>
+<div><div class="res-title">Exams</div><div class="res-path">06_Exams/</div></div>
+</a>
+</div>
+</div>
+</section>
+</aside>
+</div>
 </div>
 
-<!-- Modal: Add/Edit Event -->
-<div class="modal" id="eventModal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h3 id="modalTitle">Add Event</h3>
-      <button class="modal-close" onclick="closeModal()">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group">
-        <label>Day</label>
-        <select id="eventDay">
-          <option value="0">Sunday</option>
-          <option value="1">Monday</option>
-          <option value="2">Tuesday</option>
-          <option value="3">Wednesday</option>
-          <option value="4">Thursday</option>
-        </select>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <div class="form-group">
-          <label>Start Time</label>
-          <input type="time" id="eventStart" value="10:00">
-        </div>
-        <div class="form-group">
-          <label>End Time</label>
-          <input type="time" id="eventEnd" value="11:00">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Title</label>
-        <input type="text" id="eventTitle" placeholder="e.g. Introduction to MSE">
-      </div>
-      <div class="form-group">
-        <label>Teacher (Optional)</label>
-        <input type="text" id="eventTeacher" placeholder="e.g. A.A. Mamun Sir">
-      </div>
-      <div class="form-group">
-        <label>Type</label>
-        <select id="eventType">
-          <option value="class">Class</option>
-          <option value="lab">Lab</option>
-          <option value="study">Study</option>
-          <option value="other">Other</option>
-        </select>
-      </div>
-      <div class="form-actions">
-        <button class="btn" onclick="closeModal()">Cancel</button>
-        <button class="btn primary" onclick="saveEvent()">Save Event</button>
-      </div>
-    </div>
-  </div>
+<div class="modal" id="modal">
+<div class="mcontent">
+<div class="mheader">
+<h3 id="modalTitle">Add Event</h3>
+<button class="mclose" onclick="closeModal()">×</button>
 </div>
-
-<!-- Modal: Raw Text Editor -->
-<div class="modal" id="rawModal">
-  <div class="modal-content" style="max-width:720px">
-    <div class="modal-header">
-      <h3>Edit Weekly Routine (Raw Text)</h3>
-      <button class="modal-close" onclick="closeRawModal()">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group">
-        <label>Paste your routine in this format:</label>
-        <textarea id="rawEditor" placeholder="Sunday\n10.15-11.15\nIntroduction to MSE\nA.A.Mamun Sir\n\nMonday\n09.00-10.00\nMathematics\nProf. Rahman"></textarea>
-      </div>
-      <div style="font-size:0.75rem;color:var(--muted);margin-bottom:12px;">
-        Format: <code>Day → Time → Course → Teacher</code>. Leave blank lines between classes. Date is optional.
-      </div>
-      <div class="form-actions">
-        <button class="btn danger" onclick="clearRoutine()">Clear All</button>
-        <button class="btn" onclick="closeRawModal()">Cancel</button>
-        <button class="btn primary" onclick="updateRoutineFromText()">Update Routine</button>
-      </div>
-    </div>
-  </div>
+<div class="mbody">
+<div class="fg"><label>Day</label><select id="eventDay"><option value="0">Sunday</option><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option></select></div>
+<div class="row2">
+<div class="fg"><label>Start Time</label><input type="time" id="eventStart" value="10:00"></div>
+<div class="fg"><label>End Time</label><input type="time" id="eventEnd" value="11:00"></div>
+</div>
+<div class="fg"><label>Title</label><input type="text" id="eventTitle" placeholder="e.g. Introduction to MSE"></div>
+<div class="fg"><label>Teacher</label><input type="text" id="eventTeacher" placeholder="e.g. A.A. Mamun Sir"></div>
+<div class="fg"><label>Type</label><select id="eventType"><option value="class">Class</option><option value="lab">Lab</option><option value="study">Study</option><option value="other">Other</option></select></div>
+<div class="factions">
+<button class="btn" onclick="closeModal()">Cancel</button>
+<button class="btn primary" onclick="saveEvent()">Save</button>
+</div>
+</div>
+</div>
 </div>
 
 <script>
-const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday'];
-const types = { class: 'Class', lab: 'Lab', study: 'Study', other: 'Other' };
-
-const courses = [
-  { code: 'MSE1111', title: 'Introduction to MSE', teacher: 'A.A. Mamun Sir', credits: 2, marks: 50, type: 'class' },
-  { code: 'MSE1121', title: 'Crystallography I', teacher: 'Jesmin Sultana Mam', credits: 2, marks: 50, type: 'class' },
-  { code: 'MSE1122', title: 'Crystallography I Sessional', teacher: '', credits: 1, marks: 25, type: 'lab' },
-  { code: 'MATH1111', title: 'Matrices, Vector Analysis and Geometry', teacher: '', credits: 3, marks: 75, type: 'class' },
-  { code: 'PHY1111', title: 'Electricity and Magnetism', teacher: 'Mijanur Rahman Sir', credits: 3, marks: 75, type: 'class' },
-  { code: 'PHY1112', title: 'Electricity and Magnetism Sessional', teacher: '', credits: 1, marks: 25, type: 'lab' },
-  { code: 'CHEM1111', title: 'Organic Chemistry', teacher: '', credits: 2, marks: 50, type: 'class' },
-  { code: 'CHEM1112', title: 'Organic Chemistry Sessional', teacher: '', credits: 1, marks: 25, type: 'lab' },
-  { code: 'ENG1111', title: 'Technical and Communicative English', teacher: '', credits: 2, marks: 50, type: 'class' },
-  { code: 'MSE1112', title: 'Engineering Drawing', teacher: '', credits: 1, marks: 25, type: 'lab' }
+const days=['Sunday','Monday','Tuesday','Wednesday','Thursday'];
+const types={class:'Class',lab:'Lab',study:'Study',other:'Other'};
+const courses=[
+{code:'MSE1111',title:'Introduction to MSE',teacher:'A.A. Mamun Sir',credits:2,marks:50,type:'class'},
+{code:'MSE1121',title:'Crystallography I',teacher:'Jesmin Sultana Mam',credits:2,marks:50,type:'class'},
+{code:'MSE1122',title:'Crystallography I Sessional',teacher:'',credits:1,marks:25,type:'lab'},
+{code:'MATH1111',title:'Matrices, Vector Analysis and Geometry',teacher:'',credits:3,marks:75,type:'class'},
+{code:'PHY1111',title:'Electricity and Magnetism',teacher:'Mijanur Rahman Sir',credits:3,marks:75,type:'class'},
+{code:'PHY1112',title:'Electricity and Magnetism Sessional',teacher:'',credits:1,marks:25,type:'lab'},
+{code:'CHEM1111',title:'Organic Chemistry',teacher:'',credits:2,marks:50,type:'class'},
+{code:'CHEM1112',title:'Organic Chemistry Sessional',teacher:'',credits:1,marks:25,type:'lab'},
+{code:'ENG1111',title:'Technical and Communicative English',teacher:'',credits:2,marks:50,type:'class'},
+{code:'MSE1112',title:'Engineering Drawing',teacher:'',credits:1,marks:25,type:'lab'}
 ];
+let events=[];
+let editingEventId=null;
+let currentDay=0;
 
-let events = [];
-let weekExpanded = true;
-let editingEventId = null;
-let currentDay = 0;
-let mobileDay = 0;
-
-function loadEvents() {
-  let saved = null;
-  try {
-    const raw = localStorage.getItem('mse_routines');
-    if (raw) saved = JSON.parse(raw);
-  } catch (e) {
-    saved = null;
-  }
-  if (!Array.isArray(saved) || saved.length === 0) {
-    events = [
-      { id: 'sunday-1', title: 'Introduction to MSE', teacher: 'A.A. Mamun Sir', type: 'class', dayIndex: 0, start: '10:15', end: '11:15' },
-      { id: 'sunday-2', title: 'Crystallography', teacher: 'Jesmin Sultana Mam', type: 'class', dayIndex: 0, start: '11:20', end: '12:20' }
-    ];
-  } else {
-    events = saved;
-  }
+function loadEvents(){
+let saved=null;
+try{saved=JSON.parse(localStorage.getItem('mse_routines'));}catch(e){saved=null;}
+if(!Array.isArray(saved)||saved.length===0){
+events=[
+{id:'s1',title:'Introduction to MSE',teacher:'A.A. Mamun Sir',type:'class',dayIndex:0,start:'10:15',end:'11:15'},
+{id:'s2',title:'Crystallography I',teacher:'Jesmin Sultana Mam',type:'class',dayIndex:0,start:'11:20',end:'12:20'}
+];
+}else{events=saved;}
 }
 
-function saveEvents() {
-  localStorage.setItem('mse_routines', JSON.stringify(events));
+function saveEvents(){localStorage.setItem('mse_routines',JSON.stringify(events));}
+function dayEvents(i){return events.filter(e=>e.dayIndex===i).sort((a,b)=>(a.start||'').localeCompare(b.start||''));}
+
+function renderCourses(){
+const c=document.getElementById('coursesList');
+if(!courses.length){c.innerHTML='<div class="empty">No courses available</div>';return;}
+c.innerHTML=courses.map(x=>{
+const s=x.type==='lab';
+const items=s?[
+['Attendance / Continuous','10%'],['Quizzes / Viva / CA','20%'],['Practical Exam / Design / Report','70%']
+]:[['CT / Quizzes / Attendance','30%'],['Mid / Sessional Exam','20%'],['Final Examination','50%']];
+const cls=x.type==='lab'?'tag type-lab':'tag type-class';
+return`<div class="course">
+<div class="course-head"><div class="code">${x.code}</div><div class="credits">${x.credits} cr</div></div>
+<div class="title-c">${x.title}</div>
+<div class="teacher">${x.teacher||'Not assigned'}</div>
+<div class="meta"><span>${x.marks} marks</span><span class="${cls}">${types[x.type]||x.type}</span></div>
+<div class="marks">${items.map(i=>`<div><span class="k">${i[0]}</span><span class="v">${i[1]}</span></div>`).join('')}</div>
+</div>`;}).join('');
 }
 
-function getEventsForDay(dayIndex) {
-  return events
-    .filter(e => e.dayIndex === dayIndex)
-    .sort((a, b) => (a.start || '').localeCompare(b.start || ''));
+function renderOverview(){
+const c=document.getElementById('weeklyOverview');
+let h='<div class="ogrid">';
+days.forEach((d,i)=>{
+const evs=dayEvents(i);
+h+=`<div class="ocol"><div class="oday">${d}</div><div class="ocontent">`;
+if(!evs.length){h+=`<div class="oempty">No classes</div>`;}
+else{evs.forEach(e=>{const t=(e.start||'?')+(e.end?'-'+e.end:'');h+=`<div class="oevt"><div><div class="oevt-name">${e.title}</div><div style="margin-top:3px;font-size:.66rem;color:var(--muted)">${e.teacher||''}</div></div><div class="oevt-time">${t}</div></div>`;});}
+h+=`</div></div>`;});
+h+='</div>';c.innerHTML=h;
 }
 
-function renderCourses() {
-  const container = document.getElementById('coursesList');
-  if (!courses.length) {
-    container.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">No courses available</div></div>';
-    return;
-  }
-  container.innerHTML = courses.map(c => {
-    const isSessional = c.code.endsWith('12');
-    const breakdown = isSessional
-      ? [
-          { label: 'Attendance / Continuous', value: '10%' },
-          { label: 'Quizzes / Viva / CA', value: '20%' },
-          { label: 'Practical Exam / Design / Report', value: '70%' }
-        ]
-      : [
-          { label: 'CT / Quizzes / Attendance', value: '30%' },
-          { label: 'Mid / Sessional Exam', value: '20%' },
-          { label: 'Final Examination', value: '50%' }
-        ];
-    return `
-    <div class="course">
-      <div class="course-head">
-        <div class="course-code">${c.code}</div>
-        <div class="course-credits">${c.credits} cr</div>
-      </div>
-      <div class="course-title">${c.title}</div>
-      <div class="course-teacher">${c.teacher || 'Not assigned'}</div>
-      <div class="course-meta">
-        <span>${c.marks} marks</span>
-        <span>${c.type}</span>
-      </div>
-      <div class="mark-breakdown">
-        ${breakdown.map(item => `
-          <div class="mark-breakdown-item">
-            <span class="label">${item.label}</span>
-            <span class="value">${item.value}</span>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-  `;
-  }).join('');
+function renderDaily(){
+const c=document.getElementById('dailySchedule');
+const evs=dayEvents(currentDay);
+if(!evs.length){c.innerHTML='<div class="empty">📅 No events for '+days[currentDay]+'<br><br><button class="btn primary" onclick="openModal()">+ Add Event</button></div>';return;}
+c.innerHTML=evs.map(e=>{
+const t=(e.start||'?')+(e.end?'-'+e.end:'');
+const cls=e.type==='lab'?'ttag tl':e.type==='study'?'ttag tl2':'ttag tc';
+return`<div class="ditem"><div class="tbadge">${t}</div><div class="dinfo"><div class="dname">${e.title}</div>${e.teacher?'<div class="dsub">'+e.teacher+'</div>':''}</div><span class="${cls}">${types[e.type]||e.type}</span><button class="mbtn" onclick="openEdit('${e.id}')">Edit</button><button class="mbtn" onclick="del('${e.id}')">Delete</button></div>`;}).join('');
 }
 
-function renderWeeklyOverview() {
-  const container = document.getElementById('weeklyOverview');
-
-  let html = '<div class="overview-grid">';
-  days.forEach((dayName, dayIndex) => {
-    const dayEvents = getEventsForDay(dayIndex);
-    html += `<div class="overview-day">`;
-    html += `<div class="overview-day-header">${dayName}</div>`;
-    html += `<div class="overview-tasks">`;
-
-    if (dayEvents.length === 0) {
-      html += `<div class="overview-empty">No tasks</div>`;
-    } else {
-      dayEvents.forEach(e => {
-        const time = `${e.start || '?'}${e.end ? '-' + e.end : ''}`;
-        html += `
-          <div class="overview-task">
-            <div class="overview-task-primary">
-              <div class="overview-task-head">
-                <div class="overview-task-title">${e.title}</div>
-                <div style="display:flex;align-items:center;gap:4px;">
-                  <div class="overview-task-time">${time}</div>
-                  <button class="overview-delete" onclick="deleteEvent('${e.id}')" title="Delete">✕</button>
-                </div>
-              </div>
-              ${e.teacher ? `<div class="overview-task-teacher">${e.teacher}</div>` : ''}
-            </div>
-          </div>
-        `;
-      });
-    }
-
-    html += `</div>`;
-    html += `<button class="btn primary" onclick="openModalForDay(${dayIndex})" style="margin:8px;">+ Add</button>`;
-    html += `</div>`;
-  });
-  html += '</div>';
-
-  container.innerHTML = html;
+function renderStats(){
+const tc=courses.reduce((s,c)=>s+Number(c.credits),0);
+const tm=courses.reduce((s,c)=>s+Number(c.marks),0);
+const box=document.getElementById('sidebarStats');
+box.innerHTML=[['Courses',String(courses.length)],['Credits',String(tc)],['Marks',String(tm)]].map(r=>`<div class="stat"><div class="v">${r[1]}</div><div class="l">${r[0]}</div></div>`).join('');
+const ids=['headerCourses','sCourses'];
+ids[0]&&(document.getElementById(ids[0]).textContent=String(courses.length));
+(sCourses)&&(document.getElementById('sCourses').textContent=String(courses.length));
+document.getElementById('headerCredits').textContent=String(tc);
+document.getElementById('sCredits').textContent=String(tc);
+document.getElementById('headerMarks').textContent=String(tm);
+document.getElementById('sMarks').textContent=String(tm);
 }
 
-function toggleWeekView() {}
-
-function renderDailySchedule() {
-  const container = document.getElementById('dailySchedule');
-  const dayEvents = getEventsForDay(currentDay);
-
-  if (!dayEvents.length) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">📅</div>
-        <div class="empty-text">No events for ${days[currentDay]}</div>
-        <button class="btn primary" onclick="openAddEvent()" style="margin-top:10px;">+ Add Event</button>
-      </div>`;
-    return;
-  }
-
-  container.innerHTML = dayEvents.map(e => `
-    <div class="schedule-item">
-      <div class="time-badge">${e.start || '?'}${e.end ? '-' + e.end : ''}</div>
-      <div class="schedule-info">
-        <div class="schedule-course">${e.title}</div>
-        ${e.teacher ? `<div class="schedule-teacher">${e.teacher}</div>` : ''}
-      </div>
-      <span class="schedule-type type-${e.type}">${types[e.type] || e.type}</span>
-      <button class="btn" onclick="openEditModal('${e.id}')" style="padding:4px 8px;font-size:0.7rem;">✏️</button>
-      <button class="btn danger" onclick="deleteEvent('${e.id}')" style="padding:4px 8px;font-size:0.7rem;">×</button>
-    </div>
-  `).join('');
+function changeDay(v){currentDay=parseInt(v,10)||0;renderDaily();}
+function openModal(){editingEventId=null;document.getElementById('modalTitle').textContent='Add Event';document.getElementById('eventDay').value=String(currentDay);document.getElementById('eventStart').value='10:00';document.getElementById('eventEnd').value='11:00';document.getElementById('eventTitle').value='';document.getElementById('eventTeacher').value='';document.getElementById('eventType').value='class';document.getElementById('modal').classList.add('show');}
+function openEdit(id){const ev=events.find(e=>e.id===id);if(!ev)return;editingEventId=id;document.getElementById('modalTitle').textContent='Edit Event';document.getElementById('eventDay').value=String(ev.dayIndex);document.getElementById('eventStart').value=ev.start||'';document.getElementById('eventEnd').value=ev.end||'';document.getElementById('eventTitle').value=ev.title||'';document.getElementById('eventTeacher').value=ev.teacher||'';document.getElementById('eventType').value=ev.type||'class';document.getElementById('modal').classList.add('show');}
+function closeModal(){document.getElementById('modal').classList.remove('show');editingEventId=null;}
+function saveEvent(){
+const day=document.getElementById('eventDay').value;
+const start=document.getElementById('eventStart').value;
+const end=document.getElementById('eventEnd').value;
+const title=document.getElementById('eventTitle').value.trim();
+const teacher=document.getElementById('eventTeacher').value.trim();
+const type=document.getElementById('eventType').value;
+if(!title||!day){alert('Please fill title and day.');return;}
+if(editingEventId){const ev=events.find(e=>e.id===editingEventId);if(ev){Object.assign(ev,{dayIndex:parseInt(day),start,end,title,teacher,type});}}else{events.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),dayIndex:parseInt(day),start,end,title,teacher,type});}
+saveEvents();renderOverview();renderDaily();closeModal();
 }
-
-function switchMobileScreen(name, btn) {
-  const activeSelector = '.mobile-shell .mobile-screen.active';
-  document.querySelectorAll('.mobile-shell .mobile-screen').forEach(el => el.classList.remove('active'));
-  const target = document.querySelector('.mobile-shell #screen-' + name);
-  if (target) target.classList.add('active');
-  document.querySelectorAll('#mobileNav button').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-}
-
-function renderMobileToday() {
-  const el = document.getElementById('mobileToday');
-  const dayEvents = getEventsForDay(currentDay);
-  if (!dayEvents.length) {
-    if (el) el.innerHTML = '<div class="m-item" style="justify-content:center;color:var(--muted);">No events</div>';
-    return;
-  }
-  if (!el) return;
-  el.innerHTML = dayEvents.map(e => `
-    <div class="m-item">
-      <div class="m-item-time">${e.start || '?'}${e.end ? '-'+e.end : ''}</div>
-      <div class="m-item-info">
-        <div class="m-item-title">${e.title}</div>
-        ${e.teacher ? `<div class="m-item-sub">${e.teacher}</div>` : ''}
-      </div>
-      <span class="schedule-type type-${e.type}" style="font-size:0.65rem;padding:3px 8px;">${types[e.type]||e.type}</span>
-    </div>
-  `).join('');
-}
-
-function renderMobileWeek() {
-  const week = document.getElementById('mobileWeek');
-  if (!week) return;
-  let html = '';
-  days.forEach((d, i) => {
-    const list = getEventsForDay(i);
-    html += `<div class="m-item" onclick="document.getElementById('selectedDay').value='${i}';changeSelectedDay();">`;
-    html += `<div class="m-item-info"><div class="m-item-title">${d}</div><div class="m-item-sub">${list.length} class${list.length===1?'':'es'}</div></div>`;
-    html += `<div style="color:var(--muted);font-size:0.75rem;">›</div>`;
-    html += `</div>`;
-  });
-  week.innerHTML = html;
-}
-
-function renderMobileCourses() {
-  const box = document.getElementById('mobileCourses');
-  if (!box) return;
-  box.innerHTML = courses.map(c => {
-    const isSessional = c.code.endsWith('12');
-    const mark = isSessional ? '25 marks' : '50-75 marks';
-    const color = c.type === 'lab' ? 'var(--success)' : 'var(--accent)';
-    return `
-    <div class="m-card">
-      <div class="m-card-header" style="color:${color}">${c.code}</div>
-      <div class="m-list">
-        <div class="m-item-title" style="margin-bottom:4px;">${c.title}</div>
-        <div class="m-item-sub">${c.teacher || 'Not assigned'} • ${c.credits} cr • ${mark}</div>
-      </div>
-    </div>
-    `;
-  }).join('');
-}
-
-function sendMobileChat() {
-  const input = document.getElementById('mobileChatInput');
-  const log = document.getElementById('mobileChatLog');
-  const text = (input && input.value || '').trim();
-  if (!text) return;
-  if (!log) return;
-  const row = document.createElement('div');
-  row.className = 'chat-row user';
-  row.innerHTML = `<div class="chat-meta">You</div><div class="chat-bubble">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
-  log.appendChild(row);
-  if (input) input.value = '';
-  log.scrollTop = log.scrollHeight;
-
-  setTimeout(() => {
-    const reply = document.createElement('div');
-  reply.className = 'chat-row assistant';
-    reply.innerHTML = `<div class="chat-meta">Assistant</div><div class="chat-bubble">This mobile chat is a placeholder. Your desktop assistant needs a backend to reply.</div>`;
-  log.appendChild(reply);
-  log.scrollTop = log.scrollHeight;
-  }, 400);
-}
-
-function changeSelectedDay() {
-  currentDay = parseInt(document.getElementById('selectedDay').value, 10);
-  renderDailySchedule();
-  renderMobileToday();
-  renderMobileWeek();
-}
-
-function openAddEvent() {
-  editingEventId = null;
-  document.getElementById('modalTitle').textContent = 'Add Event';
-  document.getElementById('eventModal').classList.add('active');
-  document.getElementById('eventDay').value = String(currentDay);
-  document.getElementById('eventStart').value = '10:00';
-  document.getElementById('eventEnd').value = '11:00';
-  document.getElementById('eventTitle').value = '';
-  document.getElementById('eventTeacher').value = '';
-  document.getElementById('eventType').value = 'class';
-}
-
-function openModalForSlot(day, hour) {
-  editingEventId = null;
-  document.getElementById('modalTitle').textContent = 'Add Event';
-  document.getElementById('eventModal').classList.add('active');
-  document.getElementById('eventDay').value = String(day);
-  document.getElementById('eventStart').value = `${hour}:00`;
-  const endHour = (parseInt(hour, 10) + 1).toString().padStart(2, '0');
-  document.getElementById('eventEnd').value = `${endHour}:00`;
-  document.getElementById('eventTitle').value = '';
-  document.getElementById('eventTeacher').value = '';
-  document.getElementById('eventType').value = 'class';
-}
-
-function openModalForDay(day) {
-  editingEventId = null;
-  document.getElementById('modalTitle').textContent = 'Add Event';
-  document.getElementById('eventModal').classList.add('active');
-  document.getElementById('eventDay').value = String(day);
-  document.getElementById('eventStart').value = '';
-  document.getElementById('eventEnd').value = '';
-  document.getElementById('eventTitle').value = '';
-  document.getElementById('eventTeacher').value = '';
-  document.getElementById('eventType').value = 'class';
-}
-
-function openEditModal(id) {
-  const ev = events.find(e => e.id === id);
-  if (!ev) return;
-  editingEventId = id;
-  document.getElementById('modalTitle').textContent = 'Edit Event';
-  document.getElementById('eventModal').classList.add('active');
-  document.getElementById('eventDay').value = String(ev.dayIndex);
-  document.getElementById('eventStart').value = ev.start || '';
-  document.getElementById('eventEnd').value = ev.end || '';
-  document.getElementById('eventTitle').value = ev.title || '';
-  document.getElementById('eventTeacher').value = ev.teacher || '';
-  document.getElementById('eventType').value = ev.type || 'class';
-}
-
-function closeModal() {
-  document.getElementById('eventModal').classList.remove('active');
-  editingEventId = null;
-}
-
-function saveEvent() {
-  const day = document.getElementById('eventDay').value;
-  const start = document.getElementById('eventStart').value;
-  const end = document.getElementById('eventEnd').value;
-  const title = document.getElementById('eventTitle').value.trim();
-  const teacher = document.getElementById('eventTeacher').value.trim();
-  const type = document.getElementById('eventType').value;
-  if (!title || !day) {
-    alert('Please fill in at least the title and day.');
-    return;
-  }
-
-  if (editingEventId) {
-    const ev = events.find(e => e.id === editingEventId);
-    if (ev) {
-      ev.dayIndex = parseInt(day, 10);
-      ev.start = start;
-      ev.end = end;
-      ev.title = title;
-      ev.teacher = teacher;
-      ev.type = type;
-    }
-  } else {
-    events.push({
-      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
-      dayIndex: parseInt(day, 10),
-      start,
-      end,
-      title,
-      teacher,
-      type
-    });
-  }
-
-  saveEvents();
-  renderWeeklyOverview();
-  renderDailySchedule();
-  closeModal();
-}
-
-function deleteEvent(id) {
-  if (!confirm('Delete this event?')) return;
-  events = events.filter(e => e.id !== id);
-  saveEvents();
-  renderWeeklyOverview();
-  renderDailySchedule();
-}
-
-function formatRoutineText() {
-  const lines = [];
-  events.forEach(e => {
-    const dateStr = new Date().toISOString().slice(0, 10);
-    lines.push(dateStr);
-    lines.push(days[e.dayIndex] || '');
-    lines.push((e.start || '*.*') + '-' + (e.end || '*.*'));
-    lines.push(e.title || '');
-    lines.push(e.teacher || '');
-    lines.push('');
-  });
-  return lines.join('\n');
-}
-
-function openRawEditor() {
-  document.getElementById('rawEditor').value = formatRoutineText();
-  document.getElementById('rawModal').classList.add('active');
-}
-
-function closeRawModal() {
-  document.getElementById('rawModal').classList.remove('active');
-}
-
-function updateRoutineFromText() {
-  const text = document.getElementById('rawEditor').value.trim();
-  if (!text) return;
-  const blocks = text.split(/\n\s*\n/);
-  const newEvents = [];
-  blocks.forEach(block => {
-    const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
-    if (lines.length < 3) return;
-    const dayName = (lines[0] || '').toLowerCase();
-    const timeLine = (lines[1] || '');
-    let title = (lines[2] || '').trim();
-    let teacher = (lines[3] || '').trim();
-    const dayIndex = days.findIndex(d => d.toLowerCase() === dayName);
-    if (dayIndex < 0) return;
-    let start = '', end = '';
-    if (timeLine.includes('-')) {
-      const parts = timeLine.split('-');
-      start = (parts[0] || '').trim();
-      end = (parts[1] || '').trim();
-    }
-    if (!title) return;
-    newEvents.push({
-      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
-      dayIndex,
-      start,
-      end,
-      title,
-      teacher,
-      type: 'class'
-    });
-  });
-  if (newEvents.length) {
-    events = newEvents;
-    saveEvents();
-    renderWeeklyOverview();
-    renderDailySchedule();
-  }
-  closeRawModal();
-}
-
-function clearRoutine() {
-  if (!confirm('Clear all events?')) return;
-  events = [];
-  saveEvents();
-  renderWeeklyCalendar();
-  renderDailySchedule();
-  document.getElementById('rawEditor').value = '';
-}
-
-function updateStats() {
-  const totalCredits = courses.reduce((sum, c) => sum + Number(c.credits), 0);
-  const totalMarks = courses.reduce((sum, c) => sum + Number(c.marks), 0);
-  document.getElementById('quickStats').innerHTML = `
-    <div class="quick-stat"><div class="value">${totalCredits}</div><div class="label">Credits</div></div>
-    <div class="quick-stat"><div class="value">${totalMarks}</div><div class="label">Marks</div></div>
-    <div class="quick-stat"><div class="value">${courses.length}</div><div class="label">Courses</div></div>
-  `;
-
-  const coursesEl = document.getElementById('headerCourses');
-  const creditsEl = document.getElementById('headerCredits');
-  const marksEl = document.getElementById('headerMarks');
-  const statCoursesEl = document.getElementById('headerStatCourses');
-  const statCreditsEl = document.getElementById('headerStatCredits');
-  const statMarksEl = document.getElementById('headerStatMarks');
-
-  if (coursesEl) coursesEl.textContent = String(courses.length);
-  if (creditsEl) creditsEl.textContent = String(totalCredits);
-  if (marksEl) marksEl.textContent = String(totalMarks);
-  if (statCoursesEl) statCoursesEl.textContent = String(courses.length);
-  if (statCreditsEl) statCreditsEl.textContent = String(totalCredits);
-  if (statMarksEl) statMarksEl.textContent = String(totalMarks);
-}
-
-function init() {
-  loadEvents();
-  renderCourses();
-  renderWeeklyOverview();
-  renderDailySchedule();
-  updateStats();
-  renderMobileToday();
-  renderMobileWeek();
-  renderMobileCourses();
-  switchMobileScreen('routine', document.querySelector('#mobileNav button'));
-
-  document.getElementById('selectedDay').addEventListener('change', changeSelectedDay);
-}
-
-init();
+function del(id){if(!confirm('Delete?'))return;events=events.filter(e=>e.id!==id);saveEvents();renderOverview();renderDaily();document.getElementById('selectedDay').value=String(currentDay);}
+loadEvents();
+renderCourses();
+renderOverview();
+renderDaily();
+renderStats();
+document.getElementById('selectedDay').value=String(currentDay);
 </script>
 </body>
 </html>
