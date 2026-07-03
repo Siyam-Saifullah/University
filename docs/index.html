@@ -85,6 +85,41 @@ body {
 
 @media (max-width: 960px) { .layout { grid-template-columns: 1fr; } }
 
+@media (max-width: 768px) {
+  .container { padding: 12px; }
+  .title h1 { font-size: 1.15rem; }
+  .title p { font-size: 0.78rem; }
+  .badge, .stat { font-size: 0.72rem; padding: 6px 10px; }
+  .courses { grid-template-columns: 1fr; }
+  .overview-grid { grid-template-columns: repeat(3, minmax(150px, 1fr)); }
+  .weekly-calendar { grid-template-columns: 40px repeat(5, 1fr); overflow-x: auto; }
+  .chat-log { max-height: 220px; }
+  .schedule-item { padding: 10px 12px; }
+  .mark-breakdown-item { font-size: 0.7rem; padding: 6px 8px; }
+}
+
+@media (max-width: 520px) {
+  .title h1 { font-size: 1.02rem; }
+  .header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .stats { width: 100%; }
+  .stat { flex: 1; min-width: 60px; }
+  .stat .value { font-size: 1rem; }
+  .stat .label { font-size: 0.65rem; }
+  .card-header h2 { font-size: 0.85rem; }
+  .overview-grid { grid-template-columns: repeat(2, minmax(130px, 1fr)); gap: 1px; }
+  .overview-day-header { font-size: 0.68rem; padding: 6px 4px; }
+  .overview-task { padding: 5px 6px; }
+  .overview-task-title { font-size: 0.72rem; }
+  .overview-task-time { font-size: 0.65rem; }
+  .weekly-calendar { grid-template-columns: 34px repeat(4, 1fr); min-width: 480px; }
+  .time-cell, .event-dot { font-size: 0.65rem; padding: 2px 4px; }
+  .schedule-toolbar { flex-direction: column; align-items: stretch; gap: 8px; }
+  .day-select, .btn.primary { width: 100%; }
+  .chat-log { max-height: 180px; }
+  .chat-bubble { font-size: 0.82rem; padding: 10px 12px; }
+  .resource-title, .resource-path { font-size: 0.78rem; }
+}
+
 .card + .card { margin-top: 14px; }
 
 .card {
