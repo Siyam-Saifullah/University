@@ -99,25 +99,46 @@ body {
 }
 
 @media (max-width: 520px) {
+  :root { --card-radius: 10px; }
+  .container { padding: 10px; }
   .title h1 { font-size: 1.02rem; }
-  .header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .header { flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 10px; padding-bottom: 4px; }
   .stats { width: 100%; }
-  .stat { flex: 1; min-width: 60px; }
-  .stat .value { font-size: 1rem; }
-  .stat .label { font-size: 0.65rem; }
+  .stat { flex: 1; min-width: 0; padding: 8px 6px; }
+  .stat .value { font-size: 0.95rem; }
+  .stat .label { font-size: 0.62rem; }
+  .card + .card { margin-top: 10px; }
+  .card-header { padding: 10px 12px; }
   .card-header h2 { font-size: 0.85rem; }
-  .overview-grid { grid-template-columns: repeat(2, minmax(130px, 1fr)); gap: 1px; }
-  .overview-day-header { font-size: 0.68rem; padding: 6px 4px; }
-  .overview-task { padding: 5px 6px; }
-  .overview-task-title { font-size: 0.72rem; }
-  .overview-task-time { font-size: 0.65rem; }
-  .weekly-calendar { grid-template-columns: 34px repeat(4, 1fr); min-width: 480px; }
+  .card-body { padding: 10px; }
+  .courses { grid-template-columns: 1fr; gap: 8px; }
+  .course { padding: 10px 10px; }
+  .course-title { font-size: 0.82rem; }
+  .course-teacher { font-size: 0.72rem; margin-bottom: 6px; }
+  .course-meta { gap: 4px; }
+  .mark-breakdown { display: none; }
+  .course:hover .mark-breakdown, .course:focus-within .mark-breakdown { display: flex; }
+  .overview-grid { grid-template-columns: repeat(3, minmax(120px, 1fr)); gap: 1px; }
+  .overview-day-header { font-size: 0.65rem; padding: 5px 4px; }
+  .overview-tasks { padding: 6px; min-height: 80px; }
+  .overview-task { padding: 5px 6px; margin-bottom: 3px; }
+  .overview-task-title { font-size: 0.7rem; }
+  .overview-task-time { font-size: 0.63rem; }
+  .weekly-calendar { grid-template-columns: 34px repeat(5, 1fr); min-width: 480px; }
   .time-cell, .event-dot { font-size: 0.65rem; padding: 2px 4px; }
+  .schedule-item { padding: 10px 12px; }
+  .schedule-course { font-size: 0.85rem; }
   .schedule-toolbar { flex-direction: column; align-items: stretch; gap: 8px; }
   .day-select, .btn.primary { width: 100%; }
   .chat-log { max-height: 180px; }
   .chat-bubble { font-size: 0.82rem; padding: 10px 12px; }
+  .chat-input { font-size: 0.82rem; padding: 10px 12px; }
+  .chat-send, .chat-clear { padding: 10px 12px; font-size: 0.82rem; }
   .resource-title, .resource-path { font-size: 0.78rem; }
+  .modal-content { max-width: 100%; }
+  .form-group label { font-size: 0.75rem; }
+  .form-group input, .form-group select, .form-group textarea { font-size: 0.82rem; padding: 8px; }
+  .btn { padding: 7px 10px; font-size: 0.75rem; }
 }
 
 .card + .card { margin-top: 14px; }
