@@ -855,6 +855,77 @@ body {
 </head>
 <body>
 <div id="desktopLayout">
+<div class="mobile-shell" id="mobileShell">
+  <div class="mobile-header">
+    <h1>🎓 MSE 1st Semester</h1>
+    <p>RU • Materials Science & Engineering • 2025-26</p>
+  </div>
+
+  <div class="mobile-screen active" id="screen-routine">
+    <div class="m-card">
+      <div class="m-card-header">📅 Today</div>
+      <div class="m-list" id="mobileToday"></div>
+      <div class="m-add-row">
+        <button class="btn primary" onclick="openAddEvent()">+ Add Event</button>
+      </div>
+    </div>
+    <div class="m-card">
+      <div class="m-card-header">🗓 Week</div>
+      <div class="m-list" id="mobileWeek"></div>
+    </div>
+  </div>
+
+  <div class="mobile-screen" id="screen-courses">
+    <div id="mobileCourses"></div>
+  </div>
+
+  <div class="mobile-screen" id="screen-chat">
+    <div class="m-card chat-block">
+      <div class="m-card-header">💬 Study Assistant</div>
+      <div class="chat-log" id="mobileChatLog"></div>
+      <div class="chat-bar">
+        <input class="chat-input" id="mobileChatInput" placeholder="Ask anything..." />
+        <button class="chat-send" onclick="sendMobileChat()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mobile-screen" id="screen-more">
+    <div class="m-card">
+      <div class="m-card-header">📊 Quick Stats</div>
+      <div class="m-list" id="mobileStats"></div>
+    </div>
+    <div class="m-card">
+      <div class="m-card-header">📖 Resources</div>
+      <div class="m-list">
+        <a class="m-item" style="text-decoration:none;color:inherit" href="01_Curriculum/MSE_First_Year_Semester_Curriculum_2025.pdf">
+          <div class="m-item-info"><div class="m-item-title">📄 Curriculum 2025</div><div class="m-item-sub">01_Curriculum/</div></div>
+        </a>
+        <a class="m-item" style="text-decoration:none;color:inherit" href="02_Resources/Textbooks/Callister_Fundamentals_Materials_Science_Engineering_5th_Edition.pdf">
+          <div class="m-item-info"><div class="m-item-title">📘 Callister 5th</div><div class="m-item-sub">02_Resources/</div></div>
+        </a>
+        <a class="m-item" style="text-decoration:none;color:inherit" href="03_Courses">
+          <div class="m-item-info"><div class="m-item-title">📂 Course Folders</div><div class="m-item-sub">03_Courses/</div></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <nav class="mobile-nav" id="mobileNav">
+    <button class="active" onclick="switchMobileScreen('routine', this)">
+      <span>📋</span><span>Routine</span>
+    </button>
+    <button onclick="switchMobileScreen('courses', this)">
+      <span>📚</span><span>Courses</span>
+    </button>
+    <button onclick="switchMobileScreen('chat', this)">
+      <span>💬</span><span>Chat</span>
+    </button>
+    <button onclick="switchMobileScreen('more', this)">
+      <span>⋯</span><span>More</span>
+    </button>
+  </nav>
+</div>
 <div class="container">
   <header class="header">
     <div class="title">
@@ -1192,13 +1263,98 @@ function renderDailySchedule() {
   `).join('');
 }
 
+function switchMobileScreen(name, btn) {
+  const activeSelector = '.mobile-shell .mobile-screen.active';
+  document.querySelectorAll('.mobile-shell .mobile-screen').forEach(el => el.classList.remove('active'));
+  const target = document.querySelector('.mobile-shell #screen-' + name);
+  if (target) target.classList.add('active');
+  document.querySelectorAll('#mobileNav button').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+
+function renderMobileToday() {
+  const el = document.getElementById('mobileToday');
+  const dayEvents = getEventsForDay(currentDay);
+  if (!dayEvents.length) {
+    if (el) el.innerHTML = '<div class="m-item" style="justify-content:center;color:var(--muted);">No events</div>';
+    return;
+  }
+  if (!el) return;
+  el.innerHTML = dayEvents.map(e => `
+    <div class="m-item">
+      <div class="m-item-time">${e.start || '?'}${e.end ? '-'+e.end : ''}</div>
+      <div class="m-item-info">
+        <div class="m-item-title">${e.title}</div>
+        ${e.teacher ? `<div class="m-item-sub">${e.teacher}</div>` : ''}
+      </div>
+      <span class="schedule-type type-${e.type}" style="font-size:0.65rem;padding:3px 8px;">${types[e.type]||e.type}</span>
+    </div>
+  `).join('');
+}
+
+function renderMobileWeek() {
+  const week = document.getElementById('mobileWeek');
+  if (!week) return;
+  let html = '';
+  days.forEach((d, i) => {
+    const list = getEventsForDay(i);
+    html += `<div class="m-item" onclick="document.getElementById('selectedDay').value='${i}';changeSelectedDay();">`;
+    html += `<div class="m-item-info"><div class="m-item-title">${d}</div><div class="m-item-sub">${list.length} class${list.length===1?'':'es'}</div></div>`;
+    html += `<div style="color:var(--muted);font-size:0.75rem;">›</div>`;
+    html += `</div>`;
+  });
+  week.innerHTML = html;
+}
+
+function renderMobileCourses() {
+  const box = document.getElementById('mobileCourses');
+  if (!box) return;
+  box.innerHTML = courses.map(c => {
+    const isSessional = c.code.endsWith('12');
+    const mark = isSessional ? '25 marks' : '50-75 marks';
+    const color = c.type === 'lab' ? 'var(--success)' : 'var(--accent)';
+    return `
+    <div class="m-card">
+      <div class="m-card-header" style="color:${color}">${c.code}</div>
+      <div class="m-list">
+        <div class="m-item-title" style="margin-bottom:4px;">${c.title}</div>
+        <div class="m-item-sub">${c.teacher || 'Not assigned'} • ${c.credits} cr • ${mark}</div>
+      </div>
+    </div>
+    `;
+  }).join('');
+}
+
+function sendMobileChat() {
+  const input = document.getElementById('mobileChatInput');
+  const log = document.getElementById('mobileChatLog');
+  const text = (input && input.value || '').trim();
+  if (!text) return;
+  if (!log) return;
+  const row = document.createElement('div');
+  row.className = 'chat-row user';
+  row.innerHTML = `<div class="chat-meta">You</div><div class="chat-bubble">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
+  log.appendChild(row);
+  if (input) input.value = '';
+  log.scrollTop = log.scrollHeight;
+
+  setTimeout(() => {
+    const reply = document.createElement('div');
+  reply.className = 'chat-row assistant';
+    reply.innerHTML = `<div class="chat-meta">Assistant</div><div class="chat-bubble">This mobile chat is a placeholder. Your desktop assistant needs a backend to reply.</div>`;
+  log.appendChild(reply);
+  log.scrollTop = log.scrollHeight;
+  }, 400);
+}
+
 function changeSelectedDay() {
   currentDay = parseInt(document.getElementById('selectedDay').value, 10);
   renderDailySchedule();
-  if (typeof renderMobileToday === 'function') renderMobileToday();
+  renderMobileToday();
+  renderMobileWeek();
 }
 
-function openAddEvent() {
+function updateStats() {
   editingEventId = null;
   document.getElementById('modalTitle').textContent = 'Add Event';
   document.getElementById('eventModal').classList.add('active');
